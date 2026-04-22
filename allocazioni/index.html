@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manuale Utente — Finance 2026 Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,300&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:       #0e1420;
+  --ink2:      #2d3748;
+  --ink3:      #64748b;
+  --paper:     #fafafa;
+  --surface:   #ffffff;
+  --rule:      #e4e8f0;
+  --rule2:     #cbd5e1;
+  --accent:    #1d4ed8;
+  --accent-lt: #eff6ff;
+  --accent-dk: #1e3a8a;
+  --gold:      #b45309;
+  --gold-lt:   #fef3c7;
+  --green:     #166534;
+  --green-lt:  #dcfce7;
+  --red:       #991b1b;
+  --red-lt:    #fee2e2;
+  --violet:    #5b21b6;
+  --violet-lt: #ede9fe;
+  --teal:      #0e7490;
+  --teal-lt:   #cffafe;
+  --sidebar-w: 270px;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Outfit', sans-serif;
+  --serif: 'Fraunces', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 15px; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.65;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--ink);
+  color: #c8d3e8;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: #334155; }
+
+.sb-brand {
+  padding: 28px 22px 20px;
+  border-bottom: 1px solid #1e293b;
+}
+.sb-eyebrow {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #475569;
+  margin-bottom: 8px;
+}
+.sb-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 500;
+  color: #f1f5f9;
+  line-height: 1.2;
+}
+.sb-title em { font-style: italic; color: #93c5fd; }
+.sb-version {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #475569;
+  margin-top: 6px;
+}
+
+.sb-search {
+  padding: 12px 14px;
+  border-bottom: 1px solid #1e293b;
+}
+.sb-search input {
+  width: 100%;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 6px 10px 6px 30px;
+  font-family: var(--sans);
+  font-size: 12px;
+  color: #cbd5e1;
+  outline: none;
+  position: relative;
+}
+.sb-search input::placeholder { color: #475569; }
+.sb-search input:focus { border-color: #3b82f6; }
+.search-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-icon svg {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #475569;
+  pointer-events: none;
+}
+
+.sb-nav { padding: 8px 0 24px; flex: 1; }
+.sb-section-lbl {
+  padding: 14px 22px 5px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #334155;
+}
+.sb-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 22px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 400;
+  color: #94a3b8;
+  border-left: 2px solid transparent;
+  transition: all .15s;
+  text-decoration: none;
+}
+.sb-item:hover { color: #f1f5f9; background: #1e293b; }
+.sb-item.active { color: #93c5fd; border-left-color: #3b82f6; background: rgba(59,130,246,.08); font-weight: 500; }
+.sb-item .sb-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #334155;
+  flex-shrink: 0;
+  width: 18px;
+}
+.sb-item.active .sb-num { color: #3b82f6; }
+.sb-item .sb-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #334155;
+  flex-shrink: 0;
+}
+.sb-item.active .sb-dot { background: #3b82f6; }
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, var(--ink) 0%, #1e3a5f 50%, #0f2d52 100%);
+  padding: 64px 64px 56px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,130,246,.15) 0%, transparent 70%);
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: 200px;
+  width: 250px; height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(147,197,253,.08) 0%, transparent 70%);
+}
+.hero-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #60a5fa;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-kicker::before {
+  content: '';
+  display: inline-block;
+  width: 24px; height: 1px;
+  background: #3b82f6;
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: 42px;
+  font-weight: 300;
+  color: #f8fafc;
+  line-height: 1.15;
+  max-width: 580px;
+  margin-bottom: 20px;
+}
+.hero h1 em { font-style: italic; color: #93c5fd; }
+.hero p {
+  color: #94a3b8;
+  font-size: 15px;
+  max-width: 520px;
+  line-height: 1.7;
+}
+.hero-pills {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: #94a3b8;
+  font-family: var(--mono);
+}
+.pill span { color: #60a5fa; }
+
+/* ── CONTENT ── */
+.content {
+  padding: 0 64px 80px;
+  max-width: 900px;
+}
+
+/* ── SECTION ── */
+.doc-section {
+  padding-top: 56px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 48px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.doc-section.visible { opacity: 1; transform: translateY(0); }
+.doc-section:last-child { border-bottom: none; }
+
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.section-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-lt);
+  padding: 3px 9px;
+  border-radius: 4px;
+}
+.section-tag.gold { color: var(--gold); background: var(--gold-lt); }
+.section-tag.green { color: var(--green); background: var(--green-lt); }
+.section-tag.violet { color: var(--violet); background: var(--violet-lt); }
+.section-tag.teal { color: var(--teal); background: var(--teal-lt); }
+
+.section-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink3);
+}
+
+.doc-section h2 {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.doc-section h3 {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink2);
+  margin: 28px 0 10px;
+  line-height: 1.3;
+}
+.doc-section p {
+  color: var(--ink2);
+  font-size: 14.5px;
+  margin-bottom: 14px;
+  line-height: 1.75;
+}
+.doc-section p:last-child { margin-bottom: 0; }
+.lead {
+  font-size: 16px !important;
+  color: var(--ink) !important;
+  font-weight: 400;
+  line-height: 1.8 !important;
+}
+
+/* ── CALLOUTS ── */
+.callout {
+  display: flex;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 8px;
+  margin: 20px 0;
+  border: 1px solid;
+}
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.callout-body { flex: 1; font-size: 13.5px; line-height: 1.65; }
+.callout-body strong { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+.callout.info { background: var(--accent-lt); border-color: #bfdbfe; color: var(--accent-dk); }
+.callout.warn { background: var(--gold-lt); border-color: #fcd34d; color: #92400e; }
+.callout.tip  { background: var(--green-lt); border-color: #86efac; color: var(--green); }
+.callout.danger { background: var(--red-lt); border-color: #fca5a5; color: var(--red); }
+
+/* ── KPI GRID ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 14px 16px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+.kpi-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--kc, var(--accent));
+}
+.kpi-card-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ink3);
+  margin-bottom: 6px;
+}
+.kpi-card-value {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.kpi-card-desc {
+  font-size: 11.5px;
+  color: var(--ink3);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* ── STEP LIST ── */
+.step-list { list-style: none; margin: 16px 0; }
+.step-list li {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: flex-start;
+}
+.step-list li:last-child { border-bottom: none; }
+.step-num {
+  flex-shrink: 0;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+.step-content { flex: 1; font-size: 14px; line-height: 1.65; color: var(--ink2); }
+.step-content strong { color: var(--ink); }
+
+/* ── TAB NAVIGATOR ── */
+.tab-navigator {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 24px 0;
+}
+.tab-nav-header {
+  display: flex;
+  border-bottom: 1px solid var(--rule);
+  overflow-x: auto;
+  background: #f8fafc;
+}
+.tab-nav-header::-webkit-scrollbar { height: 0; }
+.tab-btn {
+  flex-shrink: 0;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all .15s;
+  white-space: nowrap;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-family: var(--sans);
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--surface); }
+.tab-body { padding: 20px; }
+.tab-pane { display: none; font-size: 14px; line-height: 1.7; color: var(--ink2); }
+.tab-pane.active { display: block; }
+.tab-pane ul { margin: 10px 0 10px 18px; }
+.tab-pane li { margin-bottom: 6px; }
+.tab-pane strong { color: var(--ink); }
+
+/* ── FILE FORMAT TABLE ── */
+.format-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 16px 0;
+}
+.format-table th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  border-bottom: 2px solid var(--rule2);
+  padding: 8px 12px;
+  background: #f8fafc;
+}
+.format-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.format-table tr:last-child td { border-bottom: none; }
+.format-table tr:hover td { background: var(--accent-lt); }
+.badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.badge-req  { background: #fee2e2; color: #991b1b; }
+.badge-opt  { background: #dcfce7; color: #166534; }
+.badge-auto { background: #dbeafe; color: #1e40af; }
+
+/* ── CHART MOCKUP ── */
+.chart-mockup {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+}
+.chart-mockup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.chart-mockup-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.chart-mockup-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink3);
+}
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.bar-label { font-family: var(--mono); font-size: 10px; color: var(--ink3); width: 28px; flex-shrink: 0; }
+.bar-track { flex: 1; background: var(--rule); border-radius: 3px; height: 10px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width .6s ease; }
+.bar-value { font-family: var(--mono); font-size: 10px; color: var(--ink3); width: 50px; text-align: right; flex-shrink: 0; }
+
+/* ── ACCORDION ── */
+.accordion { margin: 20px 0; }
+.acc-item {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+.acc-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.acc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  cursor: pointer;
+  background: var(--surface);
+  user-select: none;
+}
+.acc-header-l { display: flex; align-items: center; gap: 12px; }
+.acc-icon { font-size: 16px; }
+.acc-title { font-size: 14px; font-weight: 500; color: var(--ink); }
+.acc-sub { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+.acc-chevron {
+  font-size: 12px;
+  color: var(--ink3);
+  transition: transform .25s;
+}
+.acc-item.open .acc-chevron { transform: rotate(180deg); }
+.acc-body {
+  display: none;
+  padding: 0 18px 16px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--ink2);
+  background: var(--surface);
+  border-top: 1px solid var(--rule);
+}
+.acc-body.open { display: block; padding-top: 14px; }
+.acc-body ul { margin: 8px 0 8px 18px; }
+.acc-body li { margin-bottom: 5px; }
+.acc-body strong { color: var(--ink); }
+
+/* ── INLINE CODE ── */
+code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: #f1f5f9;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1px 6px;
+  color: var(--violet);
+}
+
+/* ── PROGRESS BAR (OVERVIEW) ── */
+.progress-strip {
+  display: flex;
+  gap: 4px;
+  margin: 16px 0;
+  align-items: center;
+}
+.progress-item {
+  flex: 1;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  cursor: default;
+  transition: opacity .2s;
+}
+.progress-item:hover { opacity: .8; }
+
+/* ── SEARCH HIGHLIGHT ── */
+.highlight { background: #fef9c3; border-radius: 2px; }
+
+/* ── BACK TO TOP ── */
+.back-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 40px; height: 40px;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity .3s, transform .3s;
+  transform: translateY(10px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+  z-index: 50;
+}
+.back-top.visible { opacity: 1; transform: translateY(0); }
+.back-top:hover { background: var(--accent); }
+
+/* ── FOOTER ── */
+.doc-footer {
+  padding: 32px 64px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink3);
+  max-width: 900px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .content { padding: 0 24px 60px; }
+  .hero { padding: 40px 24px 36px; }
+  .hero h1 { font-size: 30px; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-eyebrow">Documentazione</div>
+    <div class="sb-title">Finance <em>2026</em><br>Dashboard</div>
+    <div class="sb-version">v11 · Manuale Utente</div>
+  </div>
+  <div class="sb-search">
+    <div class="search-icon">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="search-input" placeholder="Cerca nel manuale…" oninput="searchDocs(this.value)">
+    </div>
+  </div>
+  <nav class="sb-nav" id="sb-nav">
+    <div class="sb-section-lbl">Introduzione</div>
+    <a class="sb-item active" href="#intro" onclick="setActive(this)"><div class="sb-dot"></div> Panoramica generale</a>
+    <a class="sb-item" href="#requisiti" onclick="setActive(this)"><div class="sb-dot"></div> Requisiti e file</a>
+    <a class="sb-item" href="#upload" onclick="setActive(this)"><div class="sb-dot"></div> Schermata di caricamento</a>
+    <a class="sb-item" href="#navigazione" onclick="setActive(this)"><div class="sb-dot"></div> Struttura e navigazione</a>
+    <div class="sb-section-lbl">Le 9 Sezioni</div>
+    <a class="sb-item" href="#tab-overview" onclick="setActive(this)"><div class="sb-num">①</div> Panoramica</a>
+    <a class="sb-item" href="#tab-mensile" onclick="setActive(this)"><div class="sb-num">②</div> Andamento Mensile</a>
+    <a class="sb-item" href="#tab-unit" onclick="setActive(this)"><div class="sb-num">③</div> Unit &amp; Profili</a>
+    <a class="sb-item" href="#tab-commesse" onclick="setActive(this)"><div class="sb-num">④</div> Commesse</a>
+    <a class="sb-item" href="#tab-risorse" onclick="setActive(this)"><div class="sb-num">⑤</div> Risorse</a>
+    <a class="sb-item" href="#tab-margini" onclick="setActive(this)"><div class="sb-num">⑥</div> Marginalità</a>
+    <a class="sb-item" href="#tab-analisi-commesse" onclick="setActive(this)"><div class="sb-num">⑦</div> Analisi Commesse</a>
+    <a class="sb-item" href="#tab-analisi-periodo" onclick="setActive(this)"><div class="sb-num">⑧</div> Analisi Allocazioni</a>
+    <a class="sb-item" href="#tab-budget" onclick="setActive(this)"><div class="sb-num">⑨</div> Allineamento Costi</a>
+    <div class="sb-section-lbl">Strumenti</div>
+    <a class="sb-item" href="#budget-comm" onclick="setActive(this)"><div class="sb-dot"></div> Budget Commerciale</a>
+    <a class="sb-item" href="#export" onclick="setActive(this)"><div class="sb-dot"></div> Export dati (.xlsx)</a>
+    <a class="sb-item" href="#errori" onclick="setActive(this)"><div class="sb-dot"></div> Messaggi di errore</a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-kicker">Manuale Utente Ufficiale</div>
+    <h1>Finance <em>2026</em><br>Dashboard Operativa</h1>
+    <p>Guida completa all'utilizzo della dashboard per il monitoraggio di costi, ricavi, risorse e commesse dell'area Finance.</p>
+    <div class="hero-pills">
+      <span class="pill"><span>9</span> sezioni analitiche</span>
+      <span class="pill"><span>xlsx</span> input nativo</span>
+      <span class="pill"><span>→</span> export tabelle</span>
+      <span class="pill"><span>v11</span> release</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ① INTRO -->
+    <section class="doc-section" id="intro">
+      <div class="section-eyebrow">
+        <span class="section-tag">Introduzione</span>
+      </div>
+      <h2>Cos'è questa dashboard</h2>
+      <p class="lead">La <strong>Finance 2026 Dashboard Operativa</strong> è un'applicazione web che trasforma i file Excel di pianificazione in una console interattiva per il controllo di gestione.</p>
+      <p>Funziona interamente nel browser: non richiede installazioni, server o connessione internet. Basta aprire il file HTML e caricare i propri dati Excel per avere immediatamente accesso a grafici, KPI e tabelle dettagliate.</p>
+
+      <div class="callout info">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>Come funziona</strong>
+          I dati vengono elaborati localmente nel browser tramite la libreria XLSX.js. Nessun dato viene inviato a server esterni. La dashboard è un file <code>.html</code> standalone che puoi salvare e usare offline.
+        </div>
+      </div>
+
+      <h3>Cosa puoi monitorare</h3>
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#1d4ed8">
+          <div class="kpi-card-label">Ricavi</div>
+          <div class="kpi-card-value">Actual + Proiettati</div>
+          <div class="kpi-card-desc">Confronto tra ricavi consolidati e proiezione residuo anno</div>
+        </div>
+        <div class="kpi-card" style="--kc:#b45309">
+          <div class="kpi-card-label">Costi</div>
+          <div class="kpi-card-value">Per tipo attività</div>
+          <div class="kpi-card-desc">Distribuzione costi mensili con mix per tipo di attività</div>
+        </div>
+        <div class="kpi-card" style="--kc:#166534">
+          <div class="kpi-card-label">Risorse</div>
+          <div class="kpi-card-value">Allocazione giornaliera</div>
+          <div class="kpi-card-desc">Copertura e % produzione per ogni risorsa e unità</div>
+        </div>
+        <div class="kpi-card" style="--kc:#5b21b6">
+          <div class="kpi-card-label">Commesse</div>
+          <div class="kpi-card-value">Tracking completo</div>
+          <div class="kpi-card-desc">Stato, margine e scostamento per ogni commessa</div>
+        </div>
+        <div class="kpi-card" style="--kc:#0e7490">
+          <div class="kpi-card-label">Marginalità</div>
+          <div class="kpi-card-value">Analisi per commessa</div>
+          <div class="kpi-card-desc">Allineamento tra costi pianificati e budget M10</div>
+        </div>
+        <div class="kpi-card" style="--kc:#dc2626">
+          <div class="kpi-card-label">Budget</div>
+          <div class="kpi-card-value">Commerciale opzionale</div>
+          <div class="kpi-card-desc">Gap analysis tra budget commerciale e pianificazione</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ② REQUISITI -->
+    <section class="doc-section" id="requisiti">
+      <div class="section-eyebrow">
+        <span class="section-tag gold">File richiesti</span>
+        <span class="section-num">§ 2</span>
+      </div>
+      <h2>Requisiti e formato file</h2>
+      <p>La dashboard accetta file in formato <code>.xlsx</code> o <code>.xls</code>. È necessario caricare almeno il file principale di pianificazione; il file Budget Commerciale è opzionale e sblocca funzionalità aggiuntive.</p>
+
+      <table class="format-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Nome atteso</th>
+            <th>Fogli necessari</th>
+            <th>Stato</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Pianificazione operativa</strong></td>
+            <td><code>Pianificazione_operativa_FINANCE_2026_*.xlsx</code></td>
+            <td><code>dettaglio</code>, <code>allocazione</code>, <code>commesse</code>, <code>pivot_costi</code></td>
+            <td><span class="badge badge-req">Obbligatorio</span></td>
+          </tr>
+          <tr>
+            <td><strong>Budget Commerciale</strong></td>
+            <td><code>Monitoraggio_commerciale_iniziative_*.xlsx</code></td>
+            <td>Foglio con colonna <code>Codice commessa</code></td>
+            <td><span class="badge badge-opt">Opzionale</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Attenzione al nome del file</strong>
+          La dashboard riconosce i file in base al nome. Se il file di pianificazione non contiene la parola <em>Pianificazione</em> o <em>FINANCE</em> nel nome, potrebbe non essere riconosciuto correttamente. Il sistema mostra comunque un messaggio di errore esplicativo.
+        </div>
+      </div>
+
+      <h3>Struttura del foglio "dettaglio"</h3>
+      <p>Il foglio principale deve contenere una riga di intestazione con almeno le seguenti colonne (la ricerca è case-insensitive):</p>
+      <table class="format-table">
+        <thead><tr><th>Colonna</th><th>Descrizione</th><th>Tipo</th></tr></thead>
+        <tbody>
+          <tr><td><code>Anno</code></td><td>Anno di riferimento della riga</td><td>Numerico</td></tr>
+          <tr><td><code>Mese</code></td><td>Mese (1–12)</td><td>Numerico</td></tr>
+          <tr><td><code>Risorsa</code> / <code>Nominativo</code></td><td>Nome della persona allocata</td><td>Testo</td></tr>
+          <tr><td><code>Unità</code> / <code>Unit</code></td><td>Unità organizzativa</td><td>Testo</td></tr>
+          <tr><td><code>Tipo attività</code></td><td>Categoria del costo (es. Produzione, Sviluppo)</td><td>Testo</td></tr>
+          <tr><td><code>Commessa</code> / <code>Codice commessa</code></td><td>Codice identificativo commessa</td><td>Testo</td></tr>
+          <tr><td><code>Giornate</code> / <code>Gg</code></td><td>Numero di giornate allocate</td><td>Numerico</td></tr>
+          <tr><td><code>Costo €</code> / <code>Costo</code></td><td>Costo in euro</td><td>Numerico</td></tr>
+          <tr><td><code>Ricavi €</code> / <code>Ricavi</code></td><td>Ricavi associati (se presenti)</td><td>Numerico</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ③ UPLOAD -->
+    <section class="doc-section" id="upload">
+      <div class="section-eyebrow">
+        <span class="section-tag">Caricamento</span>
+        <span class="section-num">§ 3</span>
+      </div>
+      <h2>Schermata di caricamento</h2>
+      <p>All'apertura del file HTML viene mostrata una schermata di caricamento. È il punto di partenza per importare i propri dati nella dashboard.</p>
+
+      <ol class="step-list">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-content"><strong>Trascina i file</strong> nell'area tratteggiata oppure clicca su di essa per aprire il selettore file. Puoi selezionare più file contemporaneamente tenendo premuto <code>Ctrl</code> / <code>⌘</code>.</div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-content"><strong>Controlla l'elenco</strong> dei file rilevati: accanto ad ogni file apparirà un'etichetta che indica se è stato riconosciuto come "Pianificazione" o "Budget comm.". I file non riconosciuti vengono ignorati.</div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-content"><strong>Seleziona l'anno</strong> di riferimento (es. 2025, 2026) tramite i pulsanti che appaiono sopra la drop zone se il file contiene più anni.</div>
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          <div class="step-content"><strong>Clicca "Avvia Dashboard"</strong>. La dashboard elabora i dati (operazione di pochi secondi) e mostra una barra di avanzamento con la fase corrente.</div>
+        </li>
+      </ol>
+
+      <div class="callout tip">
+        <span class="callout-icon">✅</span>
+        <div class="callout-body">
+          <strong>Caricamento separato del Budget</strong>
+          Se in un secondo momento vuoi aggiungere il file Budget Commerciale, puoi farlo senza ricaricare tutto: nella barra in alto trovi il pulsante <strong>+ Budget comm.</strong> che permette di aggiungerlo a dashboard già aperta.
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-icon">🔄</span>
+        <div class="callout-body">
+          <strong>Cambiare file</strong>
+          Per caricare un file diverso, usa il pulsante <strong>↺ Cambia file</strong> in alto a destra. Questo riporta alla schermata iniziale e cancella i dati correnti dalla memoria del browser.
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ NAVIGAZIONE -->
+    <section class="doc-section" id="navigazione">
+      <div class="section-eyebrow">
+        <span class="section-tag">Interfaccia</span>
+        <span class="section-num">§ 4</span>
+      </div>
+      <h2>Struttura e navigazione</h2>
+      <p>Una volta caricati i dati, la dashboard è organizzata in tre aree principali:</p>
+
+      <div class="accordion">
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l">
+              <span class="acc-icon">🔝</span>
+              <div>
+                <div class="acc-title">Barra superiore (Header)</div>
+                <div class="acc-sub">Informazioni sul file caricato e selettore anno</div>
+              </div>
+            </div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Mostra il nome del file caricato, la versione della dashboard e — se il file contiene più anni — il <strong>selettore anno</strong> (pulsanti 2025 / 2026 ecc.). Cambiare anno ricalcola immediatamente tutte le metriche. In questa barra trovi anche il pulsante <strong>+ Budget comm.</strong> e il pulsante <strong>↺ Cambia file</strong>.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l">
+              <span class="acc-icon">🗂️</span>
+              <div>
+                <div class="acc-title">Barra di navigazione (Tab bar)</div>
+                <div class="acc-sub">Le 9 sezioni analitiche accessibili con un click</div>
+              </div>
+            </div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Subito sotto l'header si trova la barra con le 9 tab numerate da ① a ⑨. Cliccando su una tab si carica la sezione corrispondente. La tab attiva è evidenziata in blu con una linea sotto. Su schermi stretti la barra è scrollabile orizzontalmente.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l">
+              <span class="acc-icon">📊</span>
+              <div>
+                <div class="acc-title">Area contenuto principale</div>
+                <div class="acc-sub">Grafici, KPI e tabelle per la sezione attiva</div>
+              </div>
+            </div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            L'area principale occupa il resto dello schermo e cambia dinamicamente in base alla tab selezionata. Molte sezioni hanno una <strong>striscia KPI</strong> in cima con i valori chiave, seguita da grafici e tabelle. Le tabelle sono spesso <strong>cliccabili</strong>: selezionando una riga si apre un pannello di dettaglio laterale o sottostante.
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-strip" id="tab-strip-demo">
+        <div class="progress-item" style="background:#dbeafe;color:#1e40af" title="Panoramica">①</div>
+        <div class="progress-item" style="background:#fef3c7;color:#92400e" title="Mensile">②</div>
+        <div class="progress-item" style="background:#dcfce7;color:#166534" title="Unit">③</div>
+        <div class="progress-item" style="background:#ede9fe;color:#5b21b6" title="Commesse">④</div>
+        <div class="progress-item" style="background:#cffafe;color:#0e7490" title="Risorse">⑤</div>
+        <div class="progress-item" style="background:#fee2e2;color:#991b1b" title="Margini">⑥</div>
+        <div class="progress-item" style="background:#f0fdf4;color:#166534" title="Analisi">⑦</div>
+        <div class="progress-item" style="background:#fdf4ff;color:#7e22ce" title="Periodo">⑧</div>
+        <div class="progress-item" style="background:#fff7ed;color:#9a3412" title="Budget">⑨</div>
+      </div>
+      <p style="font-size:12px;color:var(--ink3);text-align:center;margin-top:-8px;font-family:var(--mono)">Le 9 tab della dashboard — passa il mouse per i nomi</p>
+    </section>
+
+    <!-- TAB 1 -->
+    <section class="doc-section" id="tab-overview">
+      <div class="section-eyebrow">
+        <span class="section-tag">Tab ①</span>
+        <span class="section-num">§ 5</span>
+      </div>
+      <h2>① Panoramica</h2>
+      <p class="lead">La sezione di ingresso della dashboard. Offre una visione d'insieme immediata con i KPI più importanti, i grafici di sintesi e le segnalazioni principali.</p>
+
+      <h3>Striscia KPI superiore</h3>
+      <p>Nella parte alta troviamo i KPI fondamentali calcolati automaticamente dai dati:</p>
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#1d4ed8">
+          <div class="kpi-card-label">Costi totali</div>
+          <div class="kpi-card-value">€ —</div>
+          <div class="kpi-card-desc">Somma costi per l'anno selezionato</div>
+        </div>
+        <div class="kpi-card" style="--kc:#b45309">
+          <div class="kpi-card-label">Giornate totali</div>
+          <div class="kpi-card-value">— gg</div>
+          <div class="kpi-card-desc">Giornate allocate nell'anno</div>
+        </div>
+        <div class="kpi-card" style="--kc:#166534">
+          <div class="kpi-card-label">N° Risorse</div>
+          <div class="kpi-card-value">—</div>
+          <div class="kpi-card-desc">Persone distinte presenti nel piano</div>
+        </div>
+        <div class="kpi-card" style="--kc:#5b21b6">
+          <div class="kpi-card-label">N° Commesse</div>
+          <div class="kpi-card-value">—</div>
+          <div class="kpi-card-desc">Commesse attive nell'anno</div>
+        </div>
+      </div>
+
+      <h3>Striscia Ricavi (se presenti)</h3>
+      <p>Se il file contiene dati di ricavo, sotto la striscia KPI appare una sezione dedicata con:</p>
+      <ul style="margin:10px 0 10px 20px;font-size:14px;color:var(--ink2);line-height:1.8">
+        <li><strong>Ricavi actual alla data</strong> — ricavi già consolidati fino al mese di riferimento</li>
+        <li><strong>Ricavi proiettati residuo anno</strong> — stima basata sulle commesse attive nei mesi futuri</li>
+        <li><strong>Ricavi totali</strong> — somma actual + proiettati</li>
+        <li><strong>Budget comm. / WIP</strong> — visibili solo se caricato il file Budget (con possibilità di drill-down cliccando il KPI)</li>
+      </ul>
+
+      <div class="callout info">
+        <span class="callout-icon">📅</span>
+        <div class="callout-body">
+          <strong>Mese di riferimento per la proiezione</strong>
+          Tramite il campo data nella sezione ricavi puoi scegliere il mese da cui inizia la proiezione. I mesi precedenti sono considerati "actual", quelli successivi "proiettati". La modifica aggiorna in tempo reale i KPI.
+        </div>
+      </div>
+
+      <h3>Grafici</h3>
+      <p>Due grafici principali nella parte bassa della sezione:</p>
+      <div class="chart-mockup">
+        <div class="chart-mockup-header">
+          <span class="chart-mockup-title">Costi mensili (€)</span>
+          <span class="chart-mockup-sub">Bar chart — tutti i mesi dell'anno</span>
+        </div>
+        <div id="bar-demo">
+          <div class="bar-row"><span class="bar-label">Gen</span><div class="bar-track"><div class="bar-fill" style="width:65%"></div></div><span class="bar-value">€ 65k</span></div>
+          <div class="bar-row"><span class="bar-label">Feb</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-value">€ 80k</span></div>
+          <div class="bar-row"><span class="bar-label">Mar</span><div class="bar-track"><div class="bar-fill" style="width:55%"></div></div><span class="bar-value">€ 55k</span></div>
+          <div class="bar-row"><span class="bar-label">Apr</span><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div><span class="bar-value">€ 90k</span></div>
+          <div class="bar-row"><span class="bar-label">Mag</span><div class="bar-track"><div class="bar-fill" style="width:72%"></div></div><span class="bar-value">€ 72k</span></div>
+        </div>
+        <p style="font-size:11px;color:var(--ink3);margin-top:10px;font-family:var(--mono)">Esempio illustrativo — i valori reali provengono dal tuo file</p>
+      </div>
+      <p>Accanto al bar chart mensile, un <strong>grafico a ciambella (donut)</strong> mostra il mix dei tipi di attività in termini di costo.</p>
+
+      <h3>Pulsante "Gap Check"</h3>
+      <p>Visibile solo se il file Budget Commerciale è caricato. Cliccando <strong>"Verifica Gap Commesse"</strong> la dashboard individua le commesse presenti nel budget commerciale ma assenti nella pianificazione operativa, mostrando l'elenco in un pannello dedicato.</p>
+    </section>
+
+    <!-- TAB 2 -->
+    <section class="doc-section" id="tab-mensile">
+      <div class="section-eyebrow">
+        <span class="section-tag gold">Tab ②</span>
+        <span class="section-num">§ 6</span>
+      </div>
+      <h2>② Andamento Mensile</h2>
+      <p class="lead">Analisi dettagliata dell'evoluzione mese su mese di costi, giornate e composizione per tipo di attività.</p>
+      <p>La sezione contiene tre grafici affiancati:</p>
+      <div class="tab-navigator">
+        <div class="tab-nav-header">
+          <button class="tab-btn active" onclick="switchTab(this,'t2a')">Combo Costi/Gg</button>
+          <button class="tab-btn" onclick="switchTab(this,'t2b')">Tipo per mese</button>
+          <button class="tab-btn" onclick="switchTab(this,'t2c')">Working Days</button>
+        </div>
+        <div class="tab-body">
+          <div class="tab-pane active" id="t2a">
+            <strong>Grafico Combo (barre + linea)</strong>: le barre mostrano i costi mensili in euro, la linea sovrapposta mostra le giornate. Permette di verificare la correlazione tra volume di lavoro e spesa.
+          </div>
+          <div class="tab-pane" id="t2b">
+            <strong>Bar chart per tipo attività</strong>: ogni barra è suddivisa per tipologia (es. Produzione, Sviluppo, Management…). Utile per capire come cambia il mix di attività nel corso dell'anno.
+          </div>
+          <div class="tab-pane" id="t2c">
+            <strong>Working Days chart</strong>: confronto tra giornate allocate e giornate lavorative teoriche per mese. Evidenzia mesi di sovra- o sotto-allocazione.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3 -->
+    <section class="doc-section" id="tab-unit">
+      <div class="section-eyebrow">
+        <span class="section-tag green">Tab ③</span>
+        <span class="section-num">§ 7</span>
+      </div>
+      <h2>③ Unit &amp; Profili</h2>
+      <p class="lead">Breakdown della spesa e delle giornate per unità organizzativa e per profilo/tipologia di risorsa.</p>
+      <p>Quattro grafici visualizzano le distribuzioni:</p>
+      <ul style="margin:10px 0 16px 20px;font-size:14px;color:var(--ink2);line-height:2">
+        <li><strong>Costi per Unità</strong> — bar chart orizzontale ordinato per valore decrescente</li>
+        <li><strong>Top Commesse</strong> — le commesse con maggiore incidenza sui costi</li>
+        <li><strong>Distribuzione Profili</strong> — mix dei profili professionali presenti nel piano</li>
+        <li><strong>Tipo Risorsa</strong> — distribuzione tra risorse interne, esterne, ecc.</li>
+      </ul>
+    </section>
+
+    <!-- TAB 4 -->
+    <section class="doc-section" id="tab-commesse">
+      <div class="section-eyebrow">
+        <span class="section-tag violet">Tab ④</span>
+        <span class="section-num">§ 8</span>
+      </div>
+      <h2>④ Commesse</h2>
+      <p class="lead">Registro completo di tutte le commesse presenti nel piano, con costi totali, giornate e principali metriche per ciascuna.</p>
+      <p>La vista è una tabella navigabile con un contatore del numero di commesse. Ogni riga mostra:</p>
+      <table class="format-table">
+        <thead><tr><th>Colonna</th><th>Contenuto</th></tr></thead>
+        <tbody>
+          <tr><td><code>Codice commessa</code></td><td>Identificativo univoco</td></tr>
+          <tr><td><code>Descrizione</code></td><td>Nome o titolo della commessa</td></tr>
+          <tr><td><code>Unità</code></td><td>Unità responsabile</td></tr>
+          <tr><td><code>Costo €</code></td><td>Costo totale pianificato</td></tr>
+          <tr><td><code>Giornate</code></td><td>Totale giornate allocate</td></tr>
+          <tr><td><code>Mesi attivi</code></td><td>Numero di mesi con allocazioni</td></tr>
+        </tbody>
+      </table>
+      <div class="callout tip">
+        <span class="callout-icon">📥</span>
+        <div class="callout-body">
+          <strong>Export disponibile</strong>
+          Tramite il pulsante <strong>↓ xlsx</strong> in alto a destra nella sezione, puoi esportare la tabella completa in un file Excel.
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5 -->
+    <section class="doc-section" id="tab-risorse">
+      <div class="section-eyebrow">
+        <span class="section-tag teal">Tab ⑤</span>
+        <span class="section-num">§ 9</span>
+      </div>
+      <h2>⑤ Risorse</h2>
+      <p class="lead">Analisi dell'allocazione individuale di ogni risorsa, con scostamenti rispetto al cap mensile e dettaglio per commessa e mese.</p>
+
+      <h3>Visualizzazioni disponibili</h3>
+      <div class="accordion">
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l">
+              <span class="acc-icon">📉</span>
+              <div><div class="acc-title">Grafico Scostamenti</div>
+              <div class="acc-sub">Deviazione dal cap di 20 gg/mese per risorsa</div></div>
+            </div><span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Bar chart orizzontale che mostra, per ogni risorsa, lo scostamento rispetto al massimo di 20 giornate mensili (cap). Barre rosse indicano sovra-allocazione, barre blu sotto-allocazione.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l">
+              <span class="acc-icon">📊</span>
+              <div><div class="acc-title">Allocazione per risorsa</div>
+              <div class="acc-sub">Bar chart con totale giornate per persona</div></div>
+            </div><span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Visualizza le giornate totali allocate per ciascuna risorsa, permettendo di identificare chi è più o meno carico nel periodo analizzato.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l">
+              <span class="acc-icon">🔍</span>
+              <div><div class="acc-title">Tabella + pannello di dettaglio</div>
+              <div class="acc-sub">Click su una riga per il calendario commesse della persona</div></div>
+            </div><span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            La tabella elenca tutte le risorse con costi e giornate aggregate. <strong>Cliccando su una riga</strong> si apre il pannello di dettaglio individuale con:
+            <ul>
+              <li>Statistiche personali (totale gg, costo, n° commesse)</li>
+              <li>Mini-chart delle giornate per mese</li>
+              <li>Filtri per mese (tab "Tutti" / singoli mesi)</li>
+              <li>Tabella riga per riga con Tipo, Commessa, Descrizione, Gg</li>
+              <li>Pulsante export xlsx del dettaglio</li>
+            </ul>
+            Per tornare alla lista, clicca su un'altra riga o usa il pulsante di chiusura.
+          </div>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <span class="callout-icon">📅</span>
+        <div class="callout-body">
+          <strong>Pannello calendario risorsa</strong>
+          Cliccando sull'icona calendario accanto a una risorsa nella tabella di dettaglio, si apre un pannello laterale con il breakdown giornaliero per mese, tipo attività e commessa. È esportabile separatamente.
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6 -->
+    <section class="doc-section" id="tab-margini">
+      <div class="section-eyebrow">
+        <span class="section-tag">Tab ⑥</span>
+        <span class="section-num">§ 10</span>
+      </div>
+      <h2>⑥ Marginalità</h2>
+      <p class="lead">Confronto tra costi pianificati e ricavi per commessa, con calcolo del margine lordo e indicatori di redditività.</p>
+      <p>In cima alla sezione, un grafico a barre mostra visivamente i margini per commessa. Seguono una tabella con le colonne principali:</p>
+      <table class="format-table">
+        <thead><tr><th>Colonna</th><th>Significato</th></tr></thead>
+        <tbody>
+          <tr><td><code>Commessa</code></td><td>Codice e descrizione</td></tr>
+          <tr><td><code>Costi €</code></td><td>Costo totale pianificato</td></tr>
+          <tr><td><code>Ricavi €</code></td><td>Ricavi associati alla commessa</td></tr>
+          <tr><td><code>Margine €</code></td><td>Ricavi − Costi</td></tr>
+          <tr><td><code>Margine %</code></td><td>Percentuale su ricavi</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Dati ricavi necessari</strong>
+          La sezione Marginalità è significativa solo se il file di pianificazione contiene i valori di ricavo per commessa. In assenza di dati di ricavo, le colonne relative appariranno vuote o con valore zero.
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 7 -->
+    <section class="doc-section" id="tab-analisi-commesse">
+      <div class="section-eyebrow">
+        <span class="section-tag green">Tab ⑦</span>
+        <span class="section-num">§ 11</span>
+      </div>
+      <h2>⑦ Analisi Commesse</h2>
+      <p class="lead">Approfondimento interattivo su ogni singola commessa: dall'andamento mensile dei costi al dettaglio delle risorse allocate.</p>
+      <p>La sezione ha un layout a pannelli affiancati:</p>
+      <ol class="step-list">
+        <li>
+          <span class="step-num">A</span>
+          <div class="step-content"><strong>Lista commesse</strong> a sinistra con KPI aggregati in cima (totale pianificato, mesi attivi, ecc.). Usa <code>↑</code> / <code>↓</code> da tastiera per navigare la lista.</div>
+        </li>
+        <li>
+          <span class="step-num">B</span>
+          <div class="step-content"><strong>Pannello dettaglio</strong> a destra: si attiva cliccando su una commessa. Mostra un mini-chart con i costi mensili della commessa e una tabella con tutte le allocazioni risorsa/mese.</div>
+        </li>
+      </ol>
+      <div class="callout tip">
+        <span class="callout-icon">⌨️</span>
+        <div class="callout-body">
+          <strong>Navigazione da tastiera</strong>
+          Con la lista commesse in focus, puoi usare i tasti freccia ↑ e ↓ per scorrere rapidamente da una commessa all'altra senza usare il mouse. Il pannello di dettaglio si aggiorna in tempo reale.
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 8 -->
+    <section class="doc-section" id="tab-analisi-periodo">
+      <div class="section-eyebrow">
+        <span class="section-tag violet">Tab ⑧</span>
+        <span class="section-num">§ 12</span>
+      </div>
+      <h2>⑧ Analisi Allocazioni DA–A</h2>
+      <p class="lead">Strumento di analisi per intervalli di tempo personalizzati: seleziona un periodo e ottieni le metriche di allocazione aggregate per tutte le unità e risorse.</p>
+
+      <h3>Come usare l'analisi per periodo</h3>
+      <ol class="step-list">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-content">Imposta il <strong>mese iniziale</strong> (DA) e il <strong>mese finale</strong> (A) tramite i due selettori date in cima alla sezione. Se la data fine è anteriore all'inizio, appare un messaggio di errore.</div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-content">I <strong>KPI del periodo</strong> vengono calcolati automaticamente: % Copertura, % Allocazione Produzione, Giornate Produzione, Giornate Totali, N° Risorse.</div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-content">Il <strong>grafico a barre</strong> mostra le giornate per unità nel periodo selezionato. <strong>Cliccando su un'unità</strong> nel grafico o nella tabella si carica il dettaglio delle risorse di quella unità.</div>
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          <div class="step-content">Nella <strong>tabella risorse</strong> (destra), cliccando su una persona si apre il pannello laterale con il dettaglio mese-per-mese, commessa per commessa, esportabile in xlsx.</div>
+        </li>
+      </ol>
+
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#5b21b6">
+          <div class="kpi-card-label">% Copertura</div>
+          <div class="kpi-card-value">gg cap / gg teoriche</div>
+          <div class="kpi-card-desc">Rapporto tra giornate capped e giorni lavorativi teorici (n° mesi × 20 × n° risorse)</div>
+        </div>
+        <div class="kpi-card" style="--kc:#0e7490">
+          <div class="kpi-card-label">% Allocaz. Produzione</div>
+          <div class="kpi-card-value">gg prod / gg totali</div>
+          <div class="kpi-card-desc">Quota delle giornate dedicate ad attività di produzione sul totale</div>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-body">
+          <strong>Pulsante "Info metodologia"</strong>
+          Il pulsante <strong>ℹ Info</strong> in alto nella sezione apre un pannello che spiega nel dettaglio come vengono calcolati i KPI del periodo (cap, copertura, produzione), con le formule utilizzate.
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 9 -->
+    <section class="doc-section" id="tab-budget">
+      <div class="section-eyebrow">
+        <span class="section-tag gold">Tab ⑨</span>
+        <span class="section-num">§ 13</span>
+      </div>
+      <h2>⑨ Allineamento Costi</h2>
+      <p class="lead">Confronto tra i costi pianificati nell'operativo e il budget M10 (modello a 10 mesi), con identificazione delle commesse in over-planning o fuori tracciamento.</p>
+
+      <h3>KPI principali</h3>
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#dc2626">
+          <div class="kpi-card-label">Commesse over</div>
+          <div class="kpi-card-value">Allineamento &lt; 0</div>
+          <div class="kpi-card-desc">Commesse dove i costi attuali superano il budget M10</div>
+        </div>
+        <div class="kpi-card" style="--kc:#166534">
+          <div class="kpi-card-label">Con margine</div>
+          <div class="kpi-card-value">Allineamento ≥ 0</div>
+          <div class="kpi-card-desc">Commesse ancora nei limiti di budget</div>
+        </div>
+        <div class="kpi-card" style="--kc:#b45309">
+          <div class="kpi-card-label">Senza M10</div>
+          <div class="kpi-card-value">Non tracciate</div>
+          <div class="kpi-card-desc">Commesse presenti nell'operativo ma prive di budget M10</div>
+        </div>
+        <div class="kpi-card" style="--kc:#0e7490">
+          <div class="kpi-card-label">Residuo totale</div>
+          <div class="kpi-card-value">Costi M10 − Actual</div>
+          <div class="kpi-card-desc">Capacità residua di spesa sul totale del budget</div>
+        </div>
+      </div>
+
+      <h3>Filtri rapidi</h3>
+      <p>Quattro pulsanti sotto i grafici permettono di filtrare la tabella per categoria:</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
+        <span style="background:var(--accent);color:#fff;padding:4px 14px;border-radius:4px;font-size:12px;font-family:var(--mono)">Tutte</span>
+        <span style="background:#fee2e2;color:#991b1b;padding:4px 14px;border-radius:4px;font-size:12px;font-family:var(--mono)">Over</span>
+        <span style="background:#dcfce7;color:#166534;padding:4px 14px;border-radius:4px;font-size:12px;font-family:var(--mono)">Margine</span>
+        <span style="background:#f1f5f9;color:#475569;padding:4px 14px;border-radius:4px;font-size:12px;font-family:var(--mono)">No M10</span>
+      </div>
+
+      <h3>Grafici</h3>
+      <p>Due visualizzazioni complementari:</p>
+      <ul style="margin:10px 0 10px 20px;font-size:14px;color:var(--ink2);line-height:2">
+        <li><strong>Bar chart allineamento</strong> — ogni barra mostra il delta (M10 − Actual) per commessa. Barre rosse = over budget</li>
+        <li><strong>Scatter plot</strong> — asse X: costi actual, asse Y: budget M10. Punti sopra la diagonale sono in margine, sotto sono in over</li>
+      </ul>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Dati Budget M10 necessari</strong>
+          Questa sezione richiede che il file di pianificazione contenga il foglio <code>pivot_costi</code> con i valori di budget M10 per commessa. In assenza di questo foglio, la sezione mostrerà dati parziali o vuoti.
+        </div>
+      </div>
+    </section>
+
+    <!-- BUDGET COMM -->
+    <section class="doc-section" id="budget-comm">
+      <div class="section-eyebrow">
+        <span class="section-tag teal">Strumento</span>
+        <span class="section-num">§ 14</span>
+      </div>
+      <h2>Budget Commerciale (opzionale)</h2>
+      <p class="lead">Il file Budget Commerciale è un secondo file Excel che, se caricato, sblocca funzionalità aggiuntive di confronto tra pipeline commerciale e pianificazione operativa.</p>
+
+      <h3>Come caricarlo</h3>
+      <p>Puoi caricarlo in due modi:</p>
+      <ul style="margin:10px 0 10px 20px;font-size:14px;color:var(--ink2);line-height:2">
+        <li><strong>All'avvio</strong> — trascina entrambi i file nell'area di drop durante la schermata di caricamento iniziale</li>
+        <li><strong>A dashboard aperta</strong> — clicca il pulsante <strong>+ Budget comm.</strong> nell'header per aggiungere il file senza perdere i dati già caricati</li>
+      </ul>
+
+      <h3>Funzionalità sbloccate</h3>
+      <div class="accordion">
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">📊</span>
+            <div><div class="acc-title">KPI Ricavi Budget + WIP</div><div class="acc-sub">In Tab ① Panoramica</div></div>
+            </div><span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Appaiono due nuovi KPI nella striscia ricavi: <strong>Ricavi budget commerciale</strong> (commesse con codice) e <strong>Ricavi budget comm. in lavorazione</strong> (commesse WIP senza codice ancora assegnato). Entrambi sono cliccabili per il drill-down.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🔍</span>
+            <div><div class="acc-title">Gap Check commesse mancanti</div><div class="acc-sub">In Tab ① Panoramica</div></div>
+            </div><span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Il pulsante <strong>"Verifica Gap Commesse"</strong> confronta le commesse del budget commerciale con quelle nella pianificazione e mostra quelle presenti nel budget ma non ancora pianificate. Utile per tenere allineata la pipeline commerciale con l'esecutivo.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">⚖️</span>
+            <div><div class="acc-title">Sezione ⑨ Allineamento Costi</div><div class="acc-sub">Dati di confronto arricchiti</div></div>
+            </div><span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            La tab ⑨ beneficia dei dati di budget commerciale mensili per arricchire il calcolo del residuo e dell'allineamento per commessa.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPORT -->
+    <section class="doc-section" id="export">
+      <div class="section-eyebrow">
+        <span class="section-tag green">Strumento</span>
+        <span class="section-num">§ 15</span>
+      </div>
+      <h2>Export dati (.xlsx)</h2>
+      <p class="lead">Ogni sezione con una tabella permette di esportare i dati visualizzati in un file Excel scaricabile direttamente dal browser.</p>
+      <p>Il pulsante di export (icona ↓ con etichetta <code>xlsx</code>) è posizionato nell'intestazione di ogni tabella esportabile. L'export include:</p>
+      <ul style="margin:10px 0 16px 20px;font-size:14px;color:var(--ink2);line-height:2">
+        <li>Tutte le righe visibili nella tabella al momento dell'export (inclusi eventuali filtri attivi)</li>
+        <li>Intestazioni di colonna come prima riga</li>
+        <li>Larghezze colonna ottimizzate automaticamente</li>
+        <li>Nome del foglio basato sulla sezione (es. <code>Commesse</code>, <code>Marginalità</code>…)</li>
+      </ul>
+      <p>Sezioni con export disponibile:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0">
+        <span style="background:#f1f5f9;border:1px solid var(--rule);padding:4px 12px;border-radius:4px;font-size:12px;font-family:var(--mono);color:var(--ink2)">④ Commesse</span>
+        <span style="background:#f1f5f9;border:1px solid var(--rule);padding:4px 12px;border-radius:4px;font-size:12px;font-family:var(--mono);color:var(--ink2)">⑤ Allocazione risorse</span>
+        <span style="background:#f1f5f9;border:1px solid var(--rule);padding:4px 12px;border-radius:4px;font-size:12px;font-family:var(--mono);color:var(--ink2)">⑤ Dettaglio risorsa</span>
+        <span style="background:#f1f5f9;border:1px solid var(--rule);padding:4px 12px;border-radius:4px;font-size:12px;font-family:var(--mono);color:var(--ink2)">⑥ Marginalità</span>
+        <span style="background:#f1f5f9;border:1px solid var(--rule);padding:4px 12px;border-radius:4px;font-size:12px;font-family:var(--mono);color:var(--ink2)">⑦ Analisi Commesse</span>
+        <span style="background:#f1f5f9;border:1px solid var(--rule);padding:4px 12px;border-radius:4px;font-size:12px;font-family:var(--mono);color:var(--ink2)">⑧ Analisi Allocazioni</span>
+        <span style="background:#f1f5f9;border:1px solid var(--rule);padding:4px 12px;border-radius:4px;font-size:12px;font-family:var(--mono);color:var(--ink2)">⑧ Risorse Unità</span>
+        <span style="background:#f1f5f9;border:1px solid var(--rule);padding:4px 12px;border-radius:4px;font-size:12px;font-family:var(--mono);color:var(--ink2)">⑨ Allineamento Budget</span>
+      </div>
+    </section>
+
+    <!-- ERRORI -->
+    <section class="doc-section" id="errori">
+      <div class="section-eyebrow">
+        <span class="section-tag">Risoluzione problemi</span>
+        <span class="section-num">§ 16</span>
+      </div>
+      <h2>Messaggi di errore comuni</h2>
+      <p class="lead">Ecco i messaggi che puoi incontrare e come risolverli.</p>
+      <div class="accordion">
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🔴</span>
+            <div><div class="acc-title">"Formato non supportato"</div><div class="acc-sub">Il file caricato non è un .xlsx o .xls</div></div>
+            </div><span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            La dashboard accetta solo file Excel in formato <code>.xlsx</code> o <code>.xls</code>. Assicurati di non caricare file <code>.csv</code>, <code>.ods</code> o altri formati. Se hai un CSV, aprilo in Excel e salvalo come <code>.xlsx</code>.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🔴</span>
+            <div><div class="acc-title">"Il foglio dettaglio non è stato trovato"</div><div class="acc-sub">Struttura del file non riconosciuta</div></div>
+            </div><span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Il file Excel caricato non contiene un foglio chiamato <code>dettaglio</code> (ricerca case-insensitive). Verifica di star caricando il file corretto: <code>Pianificazione_operativa_FINANCE_2026_*.xlsx</code>. Se il foglio ha un nome diverso, contatta chi gestisce il file sorgente.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🟡</span>
+            <div><div class="acc-title">"Il file non contiene dati riconoscibili"</div><div class="acc-sub">File vuoto o struttura diversa dall'atteso</div></div>
+            </div><span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Il file viene riconosciuto come Excel ma il suo contenuto non corrisponde alla struttura attesa. Verifica che il file non sia vuoto e che le colonne abbiano i nomi corretti (vedi §2 — Struttura del foglio). Per maggiori dettagli tecnici, apri la console del browser con <code>F12</code> e controlla i messaggi di log.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🟡</span>
+            <div><div class="acc-title">Budget Commerciale caricato ma Pianificazione assente</div><div class="acc-sub">Solo il file opzionale è stato caricato</div></div>
+            </div><span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Il file Budget Commerciale è stato rilevato, ma manca il file principale di Pianificazione. La dashboard mostra un avviso prominente e non può procedere. Assicurati di caricare anche <code>Pianificazione_operativa_FINANCE_*.xlsx</code>.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🔵</span>
+            <div><div class="acc-title">Sezione ⑨ mostra dati parziali o vuoti</div><div class="acc-sub">Foglio pivot_costi non disponibile</div></div>
+            </div><span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            La sezione Allineamento Costi richiede il foglio <code>pivot_costi</code> nel file di pianificazione. In alcune versioni del file questo foglio potrebbe non essere presente o potrebbe essere un foglio pivot che XLSX.js non riesce a leggere. In questo caso la sezione mostrerà solo i dati disponibili senza il confronto M10.
+          </div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">🛠️</span>
+        <div class="callout-body">
+          <strong>Debug avanzato</strong>
+          Per qualsiasi errore non previsto, apri la console del browser (<code>F12</code> → tab "Console") e controlla i messaggi di warning o errore. La dashboard registra informazioni dettagliate sulle operazioni di lettura file che possono aiutare a diagnosticare problemi di struttura.
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+
+  <footer class="doc-footer">
+    <span>Finance 2026 Dashboard · Manuale Utente v11</span>
+    <span>Generato automaticamente · Aprile 2026</span>
+  </footer>
+</main>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Torna in cima">↑</button>
+
+<script>
+// ── ACCORDION ──
+function toggleAcc(header) {
+  const item = header.parentElement;
+  const body = item.querySelector('.acc-body');
+  item.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// ── TAB NAVIGATOR ──
+function switchTab(btn, paneId) {
+  const nav = btn.closest('.tab-navigator');
+  nav.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  nav.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(paneId).classList.add('active');
+}
+
+// ── SIDEBAR ACTIVE ──
+function setActive(el) {
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── INTERSECTION OBSERVER (scroll spy) ──
+const sections = document.querySelectorAll('.doc-section');
+const navLinks = document.querySelectorAll('.sb-item');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + id) link.classList.add('active');
+      });
+    }
+    // fade in
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '-80px 0px -60% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// ── BACK TO TOP ──
+const backTop = document.getElementById('back-top');
+window.addEventListener('scroll', () => {
+  backTop.classList.toggle('visible', window.scrollY > 400);
+});
+
+// ── SEARCH ──
+function searchDocs(query) {
+  // Remove previous highlights
+  document.querySelectorAll('.highlight').forEach(el => {
+    el.outerHTML = el.innerHTML;
+  });
+  if (!query || query.length < 2) return;
+
+  const content = document.querySelector('.content');
+  const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  let node;
+  while (node = walker.nextNode()) {
+    if (node.nodeValue.trim() && !['SCRIPT','STYLE','INPUT'].includes(node.parentElement.tagName)) {
+      textNodes.push(node);
+    }
+  }
+
+  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  let firstMatch = null;
+  textNodes.forEach(tn => {
+    if (re.test(tn.nodeValue)) {
+      const span = document.createElement('span');
+      span.innerHTML = tn.nodeValue.replace(re, '<mark class="highlight">$1</mark>');
+      tn.parentNode.replaceChild(span, tn);
+      if (!firstMatch) firstMatch = span;
+    }
+  });
+
+  if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ── BAR ANIMATION ──
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill').forEach(b => {
+      const w = b.style.width;
+      b.style.width = '0%';
+      setTimeout(() => b.style.width = w, 100);
+    });
+    sections.forEach(s => {
+      if (s.getBoundingClientRect().top < window.innerHeight) s.classList.add('visible');
+    });
+  }, 200);
+});
+</script>
+</body>
+</html>
