@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manuale Utente — Engage Finance · Commercial Monitor 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #111827;
+  --ink2:       #374151;
+  --ink3:       #6b7280;
+  --ink4:       #9ca3af;
+  --paper:      #fafaf8;
+  --surface:    #ffffff;
+  --surface2:   #f9fafb;
+  --rule:       #e5e7eb;
+  --rule2:      #d1d5db;
+
+  --emerald:    #059669;
+  --emerald-lt: #ecfdf5;
+  --emerald-dk: #065f46;
+  --amber:      #d97706;
+  --amber-lt:   #fffbeb;
+  --amber-dk:   #92400e;
+  --red:        #dc2626;
+  --red-lt:     #fef2f2;
+  --red-dk:     #991b1b;
+  --blue:       #2563eb;
+  --blue-lt:    #eff6ff;
+  --blue-dk:    #1e3a8a;
+  --violet:     #7c3aed;
+  --violet-lt:  #f5f3ff;
+  --slate:      #334155;
+  --slate-lt:   #f8fafc;
+
+  --sidebar-w: 268px;
+  --mono: 'Fira Mono', monospace;
+  --sans: 'Plus Jakarta Sans', sans-serif;
+  --serif: 'Playfair Display', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.65;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  box-shadow: 2px 0 12px rgba(0,0,0,.04);
+}
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--rule2); border-radius: 2px; }
+
+.sb-brand {
+  padding: 24px 20px 18px;
+  border-bottom: 1px solid var(--rule);
+}
+.sb-eyebrow {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--emerald);
+  margin-bottom: 6px;
+}
+.sb-title {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.25;
+}
+.sb-title em { font-style: italic; color: var(--emerald); }
+.sb-ver {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--ink4);
+  margin-top: 7px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sb-ver::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--emerald);
+}
+
+.sb-search-wrap { padding: 10px 14px; border-bottom: 1px solid var(--rule); }
+.sb-search-wrap input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--rule2);
+  border-radius: 6px;
+  padding: 7px 10px 7px 30px;
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--ink);
+  outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 9px center;
+  transition: border-color .15s;
+}
+.sb-search-wrap input::placeholder { color: var(--ink4); }
+.sb-search-wrap input:focus { border-color: var(--emerald); }
+
+.sb-nav { flex: 1; padding: 8px 0 28px; }
+.sb-lbl {
+  padding: 14px 20px 4px;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink4);
+}
+.sb-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 20px;
+  font-size: 13px;
+  color: var(--ink3);
+  border-left: 2px solid transparent;
+  text-decoration: none;
+  transition: all .14s;
+  line-height: 1.3;
+}
+.sb-link:hover { color: var(--ink); background: var(--surface2); }
+.sb-link.active { color: var(--emerald-dk); border-left-color: var(--emerald); background: var(--emerald-lt); font-weight: 600; }
+.sb-link .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--rule2); flex-shrink: 0; }
+.sb-link.active .dot { background: var(--emerald); }
+.sb-link .tab-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  width: 20px;
+  flex-shrink: 0;
+  color: var(--ink4);
+}
+.sb-link.active .tab-num { color: var(--emerald); }
+
+/* ── MAIN ── */
+.main { flex: 1; min-width: 0; }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+  padding: 56px 64px 0;
+}
+.hero-bg-lines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 79px,
+    rgba(255,255,255,.025) 79px,
+    rgba(255,255,255,.025) 80px
+  );
+}
+.hero-glow {
+  position: absolute;
+  width: 500px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(5,150,105,.22) 0%, transparent 70%);
+  top: -60px; right: -80px;
+  pointer-events: none;
+}
+.hero-glow2 {
+  position: absolute;
+  width: 300px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(217,119,6,.12) 0%, transparent 70%);
+  bottom: 40px; left: 80px;
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative;
+  z-index: 1;
+}
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--emerald);
+  margin-bottom: 18px;
+}
+.hero-kicker::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--emerald);
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 600;
+  color: #f9fafb;
+  line-height: 1.1;
+  max-width: 600px;
+  margin-bottom: 6px;
+}
+.hero h1 em { font-style: italic; color: #6ee7b7; }
+.hero-tagline {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+  color: #6b7280;
+  margin-bottom: 18px;
+}
+.hero-desc { color: #6b7280; font-size: 14px; max-width: 520px; line-height: 1.8; }
+.hero-wave {
+  margin-top: 36px;
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 48px;
+}
+.hero-wave-bar {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  background: rgba(5,150,105,.4);
+  transition: height .3s ease;
+  min-height: 8px;
+}
+
+/* ── META STRIP ── */
+.meta-strip {
+  background: var(--emerald-dk);
+  padding: 12px 64px;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.meta-item { display: flex; align-items: center; gap: 8px; }
+.meta-label { font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.5); }
+.meta-value { font-family: var(--mono); font-size: 12px; color: #fff; font-weight: 500; }
+
+/* ── CONTENT ── */
+.content { padding: 0 64px 80px; max-width: 920px; }
+
+/* ── SECTION ── */
+.doc-section {
+  padding-top: 52px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 44px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.doc-section.visible { opacity: 1; transform: translateY(0); }
+.doc-section:last-child { border-bottom: none; }
+
+.sec-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.sec-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 3px;
+}
+.sec-tag.green  { color: var(--emerald-dk); background: var(--emerald-lt); border: 1px solid #a7f3d0; }
+.sec-tag.amber  { color: var(--amber-dk);   background: var(--amber-lt);   border: 1px solid #fde68a; }
+.sec-tag.red    { color: var(--red-dk);     background: var(--red-lt);     border: 1px solid #fca5a5; }
+.sec-tag.blue   { color: var(--blue-dk);    background: var(--blue-lt);    border: 1px solid #93c5fd; }
+.sec-tag.violet { color: #4c1d95;           background: var(--violet-lt);  border: 1px solid #c4b5fd; }
+.sec-tag.slate  { color: var(--slate);      background: var(--slate-lt);   border: 1px solid #e2e8f0; }
+.sec-num { font-family: var(--mono); font-size: 11px; color: var(--ink4); }
+
+.doc-section h2 {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.doc-section h2 em { font-style: italic; color: var(--emerald); }
+.doc-section h3 {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 28px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.doc-section h3::before {
+  content: '';
+  display: inline-block;
+  width: 3px; height: 14px;
+  background: var(--emerald);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.doc-section p { color: var(--ink2); font-size: 14px; margin-bottom: 14px; line-height: 1.8; }
+.doc-section p:last-child { margin-bottom: 0; }
+.lead { font-size: 16px !important; color: var(--ink) !important; font-weight: 400; line-height: 1.85 !important; }
+
+/* ── CALLOUTS ── */
+.callout {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin: 18px 0;
+  border: 1px solid;
+}
+.callout-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.callout-body { flex: 1; font-size: 13px; line-height: 1.65; }
+.callout-body strong { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; font-family: var(--sans); }
+.callout.tip    { background: var(--emerald-lt); border-color: #6ee7b7; color: var(--emerald-dk); }
+.callout.info   { background: var(--blue-lt);    border-color: #93c5fd; color: var(--blue-dk); }
+.callout.warn   { background: var(--amber-lt);   border-color: #fcd34d; color: var(--amber-dk); }
+.callout.note   { background: var(--slate-lt);   border-color: #cbd5e1; color: var(--slate); }
+
+/* ── KPI STRIP ── */
+.kpi-strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 10px; margin: 18px 0; }
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 14px 15px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow .2s, transform .15s;
+}
+.kpi-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,.07); transform: translateY(-1px); }
+.kpi-stripe { position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.kpi-lbl { font-family: var(--mono); font-size: 8.5px; text-transform: uppercase; letter-spacing: .9px; color: var(--ink3); margin-bottom: 7px; }
+.kpi-val { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--ink); line-height: 1; }
+.kpi-sub { font-size: 11px; color: var(--ink3); margin-top: 5px; line-height: 1.4; }
+
+/* ── TAB NAV ── */
+.tab-nav {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+.tab-nav-header {
+  display: flex;
+  border-bottom: 1px solid var(--rule);
+  overflow-x: auto;
+  background: var(--surface2);
+}
+.tab-nav-header::-webkit-scrollbar { height: 0; }
+.tnb {
+  flex-shrink: 0;
+  padding: 9px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  border-top: none; border-left: none; border-right: none;
+  background: none;
+  font-family: var(--sans);
+  white-space: nowrap;
+  transition: all .14s;
+}
+.tnb:hover { color: var(--ink); }
+.tnb.active { color: var(--emerald-dk); border-bottom-color: var(--emerald); background: var(--surface); }
+.tab-body { padding: 18px 20px; }
+.tab-pane { display: none; font-size: 13.5px; line-height: 1.75; color: var(--ink2); }
+.tab-pane.active { display: block; }
+.tab-pane ul { margin: 10px 0 10px 18px; }
+.tab-pane li { margin-bottom: 5px; }
+.tab-pane strong { color: var(--ink); }
+.tab-pane h4 { font-size: 13px; font-weight: 700; color: var(--ink); margin: 14px 0 6px; }
+
+/* ── STEP LIST ── */
+.step-list { list-style: none; margin: 14px 0; }
+.step-list li { display: flex; gap: 13px; padding: 11px 0; border-bottom: 1px solid var(--rule); align-items: flex-start; }
+.step-list li:last-child { border-bottom: none; }
+.step-num { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--emerald); color: #fff; font-family: var(--mono); font-size: 11px; display: flex; align-items: center; justify-content: center; margin-top: 1px; font-weight: 500; }
+.step-content { flex: 1; font-size: 13.5px; line-height: 1.7; color: var(--ink2); }
+.step-content strong { color: var(--ink); }
+
+/* ── TABLE ── */
+.doc-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+.doc-table th { text-align: left; font-family: var(--mono); font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); border-bottom: 2px solid var(--rule2); padding: 8px 12px; background: var(--surface2); }
+.doc-table td { padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.55; }
+.doc-table tr:last-child td { border-bottom: none; }
+.doc-table tr:hover td { background: var(--emerald-lt); }
+
+/* ── BADGES ── */
+code { font-family: var(--mono); font-size: 11.5px; background: var(--surface2); border: 1px solid var(--rule2); border-radius: 3px; padding: 1px 6px; color: var(--violet); }
+.badge { display: inline-block; font-family: var(--mono); font-size: 9.5px; padding: 2px 8px; border-radius: 3px; font-weight: 500; }
+.badge-ok     { background: var(--emerald-lt); color: var(--emerald-dk); border: 1px solid #6ee7b7; }
+.badge-warn   { background: var(--amber-lt);   color: var(--amber-dk);   border: 1px solid #fcd34d; }
+.badge-danger { background: var(--red-lt);     color: var(--red-dk);     border: 1px solid #fca5a5; }
+.badge-blue   { background: var(--blue-lt);    color: var(--blue-dk);    border: 1px solid #93c5fd; }
+.badge-violet { background: var(--violet-lt);  color: #4c1d95;           border: 1px solid #c4b5fd; }
+.badge-slate  { background: var(--slate-lt);   color: var(--slate);      border: 1px solid #cbd5e1; }
+
+/* ── ACCORDION ── */
+.accordion { margin: 18px 0; }
+.acc-item { border: 1px solid var(--rule); border-radius: 7px; margin-bottom: 7px; overflow: hidden; transition: box-shadow .2s; }
+.acc-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.acc-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; cursor: pointer; background: var(--surface); user-select: none; gap: 10px; }
+.acc-header-l { display: flex; align-items: center; gap: 11px; }
+.acc-title { font-size: 14px; font-weight: 600; color: var(--ink); }
+.acc-sub { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+.acc-chevron { font-size: 11px; color: var(--ink4); transition: transform .22s; flex-shrink: 0; }
+.acc-item.open .acc-chevron { transform: rotate(180deg); }
+.acc-body { display: none; padding: 0 16px 14px; font-size: 13.5px; line-height: 1.72; color: var(--ink2); background: var(--surface); border-top: 1px solid var(--rule); }
+.acc-body.open { display: block; padding-top: 13px; }
+.acc-body ul { margin: 8px 0 8px 18px; }
+.acc-body li { margin-bottom: 5px; }
+.acc-body strong { color: var(--ink); }
+
+/* ── URGENCY PILLS ── */
+.urg-row { display: flex; gap: 8px; margin: 14px 0; flex-wrap: wrap; }
+.urg-chip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid;
+  flex: 1;
+  min-width: 150px;
+}
+.urg-chip-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.urg-chip-label { font-weight: 700; font-size: 13px; }
+.urg-chip-sub { font-size: 11px; opacity: .7; margin-top: 1px; }
+.urg-chip.critica { background: var(--red-lt);     border-color: #fca5a5; color: var(--red-dk); }
+.urg-chip.alta    { background: var(--amber-lt);   border-color: #fcd34d; color: var(--amber-dk); }
+.urg-chip.normale { background: var(--emerald-lt); border-color: #6ee7b7; color: var(--emerald-dk); }
+.urg-chip.critica .urg-chip-dot { background: var(--red); }
+.urg-chip.alta    .urg-chip-dot { background: var(--amber); }
+.urg-chip.normale .urg-chip-dot { background: var(--emerald); }
+
+/* ── STATO FLOW ── */
+.stato-flow { display: flex; gap: 3px; margin: 16px 0; flex-wrap: wrap; }
+.stato-chip {
+  padding: 6px 14px;
+  border-radius: 5px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+/* ── COLUMN MAP ── */
+.col-map { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; margin: 14px 0; }
+.col-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 13px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+.col-letter {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--emerald-dk);
+  background: var(--emerald-lt);
+  border: 1px solid #a7f3d0;
+  border-radius: 4px;
+  padding: 2px 7px;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+.col-detail { flex: 1; }
+.col-name { font-size: 12px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+.col-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+/* ── PROGRESS BAR DEMO ── */
+.progress-demo { margin: 16px 0; }
+.prog-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.prog-label { font-family: var(--mono); font-size: 11px; color: var(--ink3); width: 80px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.prog-track { flex: 1; background: var(--rule); border-radius: 100px; height: 8px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 100px; transition: width .6s ease; }
+.prog-fill.ok { background: var(--emerald); }
+.prog-fill.hot { background: var(--amber); }
+.prog-pct { font-family: var(--mono); font-size: 11px; color: var(--ink3); width: 40px; text-align: right; flex-shrink: 0; }
+
+/* ── PANEL TOUR ── */
+.panel-tour { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0; }
+.pt-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 14px 16px;
+  transition: box-shadow .2s;
+  cursor: default;
+}
+.pt-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,.07); }
+.pt-num { font-family: var(--mono); font-size: 9px; color: var(--ink4); margin-bottom: 5px; }
+.pt-icon { font-size: 18px; margin-bottom: 5px; }
+.pt-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+.pt-desc { font-size: 11.5px; color: var(--ink3); line-height: 1.5; }
+
+/* ── FILTER ROW ── */
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.fc { padding: 4px 12px; border-radius: 100px; font-size: 11.5px; border: 1px solid var(--rule2); color: var(--ink3); background: var(--surface); font-family: var(--sans); }
+.fc.sel { background: var(--emerald); border-color: var(--emerald); color: #fff; }
+.fc.sel-amber { background: var(--amber-lt); border-color: #fcd34d; color: var(--amber-dk); }
+
+/* ── HIGHLIGHT ── */
+mark.hl { background: #fef9c3; color: inherit; border-radius: 2px; }
+
+/* ── BACK TO TOP ── */
+.back-top {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  width: 38px; height: 38px;
+  background: var(--emerald-dk);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  opacity: 0;
+  transition: opacity .3s, transform .3s;
+  transform: translateY(10px);
+  box-shadow: 0 4px 14px rgba(5,150,105,.3);
+  z-index: 50;
+}
+.back-top.visible { opacity: 1; transform: translateY(0); }
+.back-top:hover { background: var(--emerald); }
+
+/* ── FOOTER ── */
+.doc-footer {
+  padding: 24px 64px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink4);
+  max-width: 920px;
+}
+
+@media (max-width: 860px) {
+  .sidebar { display: none; }
+  .content { padding: 0 20px 60px; }
+  .hero { padding: 36px 20px 0; }
+  .meta-strip { padding: 10px 20px; }
+  .hero h1 { font-size: 28px; }
+  .panel-tour { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-eyebrow">Direzione Finance · Manuale</div>
+    <div class="sb-title">Engage Finance<br><em>Commercial Monitor</em></div>
+    <div class="sb-ver">v5.0 · 2026</div>
+  </div>
+  <div class="sb-search-wrap">
+    <input type="text" placeholder="Cerca nel manuale…" oninput="searchDocs(this.value)">
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-lbl">Introduzione</div>
+    <a class="sb-link active" href="#intro" onclick="setActive(this)"><div class="dot"></div> Cos'è la dashboard</a>
+    <a class="sb-link" href="#file-excel" onclick="setActive(this)"><div class="dot"></div> File Excel richiesto</a>
+    <a class="sb-link" href="#colonne" onclick="setActive(this)"><div class="dot"></div> Mappa delle colonne</a>
+    <a class="sb-link" href="#caricamento" onclick="setActive(this)"><div class="dot"></div> Schermata di caricamento</a>
+    <a class="sb-link" href="#navigazione" onclick="setActive(this)"><div class="dot"></div> Struttura & navigazione</a>
+
+    <div class="sb-lbl">I 7 Pannelli</div>
+    <a class="sb-link" href="#overview" onclick="setActive(this)"><div class="tab-num">①</div> Executive Overview</a>
+    <a class="sb-link" href="#commerciali" onclick="setActive(this)"><div class="tab-num">②</div> Performance Commerciali</a>
+    <a class="sb-link" href="#clienti" onclick="setActive(this)"><div class="tab-num">③</div> Analisi per Cliente</a>
+    <a class="sb-link" href="#finalizzate" onclick="setActive(this)"><div class="tab-num">④</div> Iniziative Finalizzate</a>
+    <a class="sb-link" href="#pipeline" onclick="setActive(this)"><div class="tab-num">⑤</div> Pipeline da Finalizzare</a>
+    <a class="sb-link" href="#ko-nb" onclick="setActive(this)"><div class="tab-num">⑥</div> KO &amp; New Business</a>
+    <a class="sb-link" href="#confronto" onclick="setActive(this)"><div class="tab-num">⑦</div> Confronto tra date</a>
+
+    <div class="sb-lbl">Concetti chiave</div>
+    <a class="sb-link" href="#urgenza" onclick="setActive(this)"><div class="dot"></div> Urgenza &amp; criticità</a>
+    <a class="sb-link" href="#stati" onclick="setActive(this)"><div class="dot"></div> Glossario stati</a>
+    <a class="sb-link" href="#faq" onclick="setActive(this)"><div class="dot"></div> Domande frequenti</a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg-lines"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+    <div class="hero-inner">
+      <div class="hero-kicker">Direzione Finance · Manuale Operativo</div>
+      <h1>Engage Finance<br><em>Commercial Monitor</em></h1>
+      <div class="hero-tagline">Monitoraggio delle iniziative commerciali 2026</div>
+      <p class="hero-desc">Guida completa all'utilizzo della dashboard per il tracking di budget, ricavi, pipeline e performance dei commerciali dell'area Finance.</p>
+      <div class="hero-wave" id="hero-wave" aria-hidden="true">
+        <div class="hero-wave-bar" style="height:28%"></div>
+        <div class="hero-wave-bar" style="height:45%"></div>
+        <div class="hero-wave-bar" style="height:62%"></div>
+        <div class="hero-wave-bar" style="height:38%"></div>
+        <div class="hero-wave-bar" style="height:75%"></div>
+        <div class="hero-wave-bar" style="height:55%"></div>
+        <div class="hero-wave-bar" style="height:90%"></div>
+        <div class="hero-wave-bar" style="height:68%"></div>
+        <div class="hero-wave-bar" style="height:82%"></div>
+        <div class="hero-wave-bar" style="height:50%"></div>
+        <div class="hero-wave-bar" style="height:70%"></div>
+        <div class="hero-wave-bar" style="height:88%"></div>
+      </div>
+    </div>
+  </div>
+  <div class="meta-strip">
+    <div class="meta-item"><span class="meta-label">Versione</span><span class="meta-value">v5.0</span></div>
+    <div class="meta-item"><span class="meta-label">Pannelli</span><span class="meta-value">7</span></div>
+    <div class="meta-item"><span class="meta-label">Formato input</span><span class="meta-value">.xlsx</span></div>
+    <div class="meta-item"><span class="meta-label">Confronto temporale</span><span class="meta-value">2 file</span></div>
+    <div class="meta-item"><span class="meta-label">Anno di riferimento</span><span class="meta-value">2026</span></div>
+  </div>
+
+  <div class="content">
+
+    <!-- INTRO -->
+    <section class="doc-section" id="intro">
+      <div class="sec-eyebrow"><span class="sec-tag green">Introduzione</span></div>
+      <h2>Cos'è la dashboard</h2>
+      <p class="lead">Il <strong>Engage Finance Commercial Monitor 2026</strong> è una dashboard HTML standalone per il monitoraggio delle iniziative commerciali dell'area Finance: budget, ricavi, pipeline attiva e performance individuali dei commerciali.</p>
+      <p>Funziona interamente nel browser senza installazioni. Basta aprire il file HTML e caricare il proprio file Excel di monitoraggio per ottenere immediatamente grafici interattivi, KPI e tabelle filtrabili. I dati non vengono mai inviati a server esterni.</p>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>Aggiornamento settimanale</strong>
+          La dashboard è pensata per essere usata con rilasci periodici del file Excel (es. settimanali o mensili). Ogni nuovo file ha la data nel nome: caricando il file più recente come "principale" e quello precedente come "confronto", la sezione ⑦ calcola automaticamente tutte le variazioni.
+        </div>
+      </div>
+
+      <h3>Cosa monitora</h3>
+      <div class="kpi-strip">
+        <div class="kpi-card">
+          <div class="kpi-stripe" style="background:var(--emerald)"></div>
+          <div class="kpi-lbl">Budget 2026</div>
+          <div class="kpi-val" style="color:var(--emerald-dk)">col. N</div>
+          <div class="kpi-sub">Totale Ricavi Ponderati — obiettivo per commerciale</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-stripe" style="background:var(--blue)"></div>
+          <div class="kpi-lbl">Ricavi Actual OK</div>
+          <div class="kpi-val" style="color:var(--blue-dk)">col. T</div>
+          <div class="kpi-sub">Ricavi 2026 su iniziative già finalizzate (Stato = OK)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-stripe" style="background:var(--amber)"></div>
+          <div class="kpi-lbl">Hot Pipeline</div>
+          <div class="kpi-val" style="color:var(--amber-dk)">col. T≠OK</div>
+          <div class="kpi-sub">Valore col.T su iniziative non ancora finalizzate</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-stripe" style="background:var(--violet)"></div>
+          <div class="kpi-lbl">Pipeline 2027</div>
+          <div class="kpi-val" style="color:#4c1d95">col. U</div>
+          <div class="kpi-sub">Backlog potenziale per l'anno successivo</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-stripe" style="background:var(--red)"></div>
+          <div class="kpi-lbl">Iniziative KO</div>
+          <div class="kpi-val" style="color:var(--red-dk)">Stato KO</div>
+          <div class="kpi-sub">Attività perse o bloccate — impatto sul budget</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-stripe" style="background:#6366f1"></div>
+          <div class="kpi-lbl">New Business</div>
+          <div class="kpi-val" style="color:#3730a3">Flag NB</div>
+          <div class="kpi-sub">Iniziative di sviluppo non incluse nel budget originale</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILE EXCEL -->
+    <section class="doc-section" id="file-excel">
+      <div class="sec-eyebrow"><span class="sec-tag amber">File richiesto</span><span class="sec-num">§ 2</span></div>
+      <h2>File Excel richiesto</h2>
+      <p class="lead">La dashboard legge un file Excel in formato <code>.xlsx</code> con una struttura specifica. Il nome del file deve seguire la convenzione con la data per consentire il riconoscimento automatico.</p>
+
+      <h3>Convenzione del nome file</h3>
+      <div class="callout note">
+        <span class="callout-icon">📁</span>
+        <div class="callout-body">
+          <strong>Formato atteso</strong>
+          <code>Monitoraggio_commerciale_iniziative_di_budget_2026_YYYYMMDD.xlsx</code><br>
+          La data nel nome (es. <code>20260415</code>) viene estratta automaticamente e usata come data di riferimento per il calcolo delle urgenze e per l'etichetta "Rilevazione: GG/MM/AAAA" nell'header della dashboard.
+        </div>
+      </div>
+
+      <h3>Struttura del foglio</h3>
+      <p>La dashboard legge il <strong>primo foglio</strong> del file Excel (<code>SheetNames[0]</code>). La prima riga valida con le intestazioni viene individuata automaticamente (funzione <code>findHeaderRow</code>). Le colonne vengono riconosciute <strong>per nome</strong>, non per posizione, quindi l'ordine delle colonne non è vincolante.</p>
+
+      <div class="callout info">
+        <span class="callout-icon">🔍</span>
+        <div class="callout-body">
+          <strong>Riconoscimento automatico delle intestazioni</strong>
+          La dashboard scorre le righe iniziali del foglio per trovare quella che contiene le intestazioni attese. Eventuali righe di titolo o metadati sopra l'header non causano errori, purché la riga di intestazione contenga almeno le colonne richieste.
+        </div>
+      </div>
+    </section>
+
+    <!-- COLONNE -->
+    <section class="doc-section" id="colonne">
+      <div class="sec-eyebrow"><span class="sec-tag amber">Struttura dati</span><span class="sec-num">§ 3</span></div>
+      <h2>Mappa delle colonne Excel</h2>
+      <p>La dashboard utilizza le seguenti colonne del file Excel. I nomi delle intestazioni devono corrispondere <strong>esattamente</strong> (sono case-sensitive).</p>
+
+      <div class="col-map">
+        <div class="col-item">
+          <div class="col-letter">N</div>
+          <div class="col-detail">
+            <div class="col-name">Totale Ricavi Ponderati</div>
+            <div class="col-desc">Budget ponderato — valore obiettivo dell'iniziativa</div>
+          </div>
+        </div>
+        <div class="col-item">
+          <div class="col-letter">S</div>
+          <div class="col-detail">
+            <div class="col-name">Importo della proposta</div>
+            <div class="col-desc">Valore dell'offerta presentata al cliente</div>
+          </div>
+        </div>
+        <div class="col-item">
+          <div class="col-letter">T</div>
+          <div class="col-detail">
+            <div class="col-name">Ricavi 2026</div>
+            <div class="col-desc">Ricavi consuntivati o attesi per il 2026</div>
+          </div>
+        </div>
+        <div class="col-item">
+          <div class="col-letter">U</div>
+          <div class="col-detail">
+            <div class="col-name">Backlog potenziale 2027</div>
+            <div class="col-desc">Stima del valore residuo che slitterà al 2027</div>
+          </div>
+        </div>
+        <div class="col-item">
+          <div class="col-letter">—</div>
+          <div class="col-detail">
+            <div class="col-name">Cliente</div>
+            <div class="col-desc">Nome del cliente di riferimento per l'iniziativa</div>
+          </div>
+        </div>
+        <div class="col-item">
+          <div class="col-letter">—</div>
+          <div class="col-detail">
+            <div class="col-name">Commerciale</div>
+            <div class="col-desc">Nome del commerciale responsabile dell'iniziativa</div>
+          </div>
+        </div>
+        <div class="col-item">
+          <div class="col-letter">—</div>
+          <div class="col-detail">
+            <div class="col-name">Stato della proposta</div>
+            <div class="col-desc">Stato corrente: OK, KO, To do, New Business, ecc.</div>
+          </div>
+        </div>
+        <div class="col-item">
+          <div class="col-letter">—</div>
+          <div class="col-detail">
+            <div class="col-name">Budget/New Business</div>
+            <div class="col-desc">Flag: "Budget" = a budget; "New Business" = sviluppo extra</div>
+          </div>
+        </div>
+        <div class="col-item">
+          <div class="col-letter">—</div>
+          <div class="col-detail">
+            <div class="col-name">Tipo Ricavo</div>
+            <div class="col-desc">Categoria del ricavo (es. Consulenza, Advisory, ecc.)</div>
+          </div>
+        </div>
+        <div class="col-item">
+          <div class="col-letter">—</div>
+          <div class="col-detail">
+            <div class="col-name">Mese Inizio Ricavo</div>
+            <div class="col-desc">Data di avvio prevista — usata per calcolo urgenza</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Colonne numeriche</strong>
+          Le colonne N, S, T, U devono contenere valori numerici senza formattazione speciale (no simboli €, no separatori di migliaia come punti). La dashboard applica internamente la formattazione locale italiana per la visualizzazione.
+        </div>
+      </div>
+    </section>
+
+    <!-- CARICAMENTO -->
+    <section class="doc-section" id="caricamento">
+      <div class="sec-eyebrow"><span class="sec-tag green">Primo accesso</span><span class="sec-num">§ 4</span></div>
+      <h2>Schermata di caricamento</h2>
+      <p class="lead">All'apertura del file HTML appare la schermata di caricamento. Supporta uno o due file Excel: il file principale (obbligatorio) e un file di confronto opzionale per l'analisi comparativa.</p>
+
+      <h3>Procedura passo per passo</h3>
+      <ol class="step-list">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-content"><strong>File principale (obbligatorio)</strong> — trascina il file Excel più recente nell'area "📊 File principale" oppure clicca per selezionarlo. Il nome deve seguire la convenzione <code>Monitoraggio_commerciale_..._YYYYMMDD.xlsx</code> per l'estrazione automatica della data.</div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-content"><strong>File di confronto (opzionale)</strong> — se vuoi usare la sezione ⑦ "Confronto tra date", trascina qui il file della settimana precedente. I due file vengono elaborati separatamente e confrontati per rilevare nuove iniziative e variazioni di stato.</div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-content"><strong>Clicca "Genera Dashboard →"</strong> — il pulsante si attiva non appena almeno il file principale è caricato. L'elaborazione (parsing Excel + calcoli) avviene in pochi secondi direttamente nel browser.</div>
+        </li>
+      </ol>
+
+      <div class="callout tip">
+        <span class="callout-icon">🔄</span>
+        <div class="callout-body">
+          <strong>Cambiare file</strong>
+          Per ricaricare con un nuovo file, usa il pulsante <strong>↺ Ricarica</strong> nella barra in alto. Questo riporta alla schermata iniziale e azzera tutti i dati in memoria. Non è necessario ricaricare la pagina dal browser.
+        </div>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-icon">📅</span>
+        <div class="callout-body">
+          <strong>Data di riferimento e urgenza</strong>
+          La data estratta dal nome del file principale diventa la <strong>data di riferimento</strong> per il calcolo dell'urgenza delle iniziative. Le iniziative con "Mese Inizio Ricavo" passato o entro 30 giorni dalla data di riferimento vengono marcate come 🔴 Critiche.
+        </div>
+      </div>
+    </section>
+
+    <!-- NAVIGAZIONE -->
+    <section class="doc-section" id="navigazione">
+      <div class="sec-eyebrow"><span class="sec-tag slate">Interfaccia</span><span class="sec-num">§ 5</span></div>
+      <h2>Struttura &amp; navigazione</h2>
+      <p class="lead">Una volta caricati i dati, la dashboard si organizza in un <strong>header fisso</strong> con informazioni sul file e una <strong>barra di tab</strong> per navigare tra i 7 pannelli analitici.</p>
+
+      <h3>I 7 pannelli in sintesi</h3>
+      <div class="panel-tour">
+        <div class="pt-card">
+          <div class="pt-num">Tab ①</div>
+          <div class="pt-icon">📊</div>
+          <div class="pt-title">Executive Overview</div>
+          <div class="pt-desc">KPI principali, raggiungimento budget per tipo ricavo, distribuzione iniziative per stato e alert critiche</div>
+        </div>
+        <div class="pt-card">
+          <div class="pt-num">Tab ②</div>
+          <div class="pt-icon">👤</div>
+          <div class="pt-title">Performance Commerciali</div>
+          <div class="pt-desc">Budget vs Ricavi OK vs Hot Pipeline per ogni commerciale, con % raggiungimento e iniziative critiche individuali</div>
+        </div>
+        <div class="pt-card">
+          <div class="pt-num">Tab ③</div>
+          <div class="pt-icon">🏢</div>
+          <div class="pt-title">Analisi per Cliente</div>
+          <div class="pt-desc">Top 15 clienti per budget, drill-down interattivo grafico/tabella cliccando sul nome del cliente</div>
+        </div>
+        <div class="pt-card">
+          <div class="pt-num">Tab ④</div>
+          <div class="pt-icon">✅</div>
+          <div class="pt-title">Iniziative Finalizzate</div>
+          <div class="pt-desc">Lista completa delle iniziative con Stato = OK, filtrabili per commerciale e Budget/New Business</div>
+        </div>
+        <div class="pt-card">
+          <div class="pt-num">Tab ⑤</div>
+          <div class="pt-icon">⏳</div>
+          <div class="pt-title">Pipeline da Finalizzare</div>
+          <div class="pt-desc">Iniziative non ancora OK con semaforo di urgenza, filtrabili per commerciale, stato e livello urgenza</div>
+        </div>
+        <div class="pt-card">
+          <div class="pt-num">Tab ⑥</div>
+          <div class="pt-icon">📉</div>
+          <div class="pt-title">KO &amp; New Business</div>
+          <div class="pt-desc">Iniziative perse (KO), new business non a budget e Hot Pipeline valorizzata con stato ≠ OK</div>
+        </div>
+        <div class="pt-card">
+          <div class="pt-num">Tab ⑦</div>
+          <div class="pt-icon">🔀</div>
+          <div class="pt-title">Confronto tra date</div>
+          <div class="pt-desc">Evoluzione tra due rilevazioni: nuove iniziative comparse, variazioni di stato, delta ricavi per commerciale</div>
+        </div>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div class="callout-body">
+          <strong>Header della dashboard</strong>
+          In alto trovi la data di rilevazione estratta dal nome del file ("Rilevazione: GG/MM/AAAA"), il pulsante di ricarica e, quando presente, anche la data del secondo file. L'header è fisso e rimane visibile anche durante lo scroll.
+        </div>
+      </div>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section class="doc-section" id="overview">
+      <div class="sec-eyebrow"><span class="sec-tag green">Tab ①</span><span class="sec-num">§ 6</span></div>
+      <h2><em>Executive Overview</em></h2>
+      <p class="lead">Il pannello di ingresso della dashboard. Offre in un colpo d'occhio lo stato complessivo dell'anno: avanzamento del budget, mix per tipo di ricavo, distribuzione delle iniziative e alert urgenti.</p>
+
+      <h3>Striscia KPI</h3>
+      <div class="kpi-strip">
+        <div class="kpi-card">
+          <div class="kpi-stripe" style="background:var(--emerald)"></div>
+          <div class="kpi-lbl">Budget 2026</div>
+          <div class="kpi-val">€ —</div>
+          <div class="kpi-sub">Somma col. N su tutte le iniziative a budget</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-stripe" style="background:var(--blue)"></div>
+          <div class="kpi-lbl">Ricavi Actual OK</div>
+          <div class="kpi-val">€ —</div>
+          <div class="kpi-sub">Somma col. T dove Stato = OK</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-stripe" style="background:#f59e0b"></div>
+          <div class="kpi-lbl">Delta vs Budget</div>
+          <div class="kpi-val">— %</div>
+          <div class="kpi-sub">Ricavi OK − Budget (col. T − col. N)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-stripe" style="background:var(--violet)"></div>
+          <div class="kpi-lbl">Pipeline 2027</div>
+          <div class="kpi-val">€ —</div>
+          <div class="kpi-sub">Somma col. U (Backlog potenziale)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-stripe" style="background:var(--red)"></div>
+          <div class="kpi-lbl">Iniziative KO</div>
+          <div class="kpi-val">—</div>
+          <div class="kpi-sub">Conteggio e valore budget delle iniziative perse</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-stripe" style="background:#6366f1"></div>
+          <div class="kpi-lbl">New Business</div>
+          <div class="kpi-val">—</div>
+          <div class="kpi-sub">Iniziative con flag "New Business"</div>
+        </div>
+      </div>
+
+      <h3>Banner 🔥 Hot Pipeline</h3>
+      <p>Sotto i KPI compare un banner dedicato alla <strong>Hot Pipeline</strong>: valore totale delle iniziative con col. T &gt; 0 e Stato ≠ OK. Rappresenta il potenziale non ancora consolidato ma già valorizzato.</p>
+
+      <h3>Grafici</h3>
+      <div class="tab-nav">
+        <div class="tab-nav-header">
+          <button class="tnb active" onclick="switchTab(this,'ov1')">Raggiungimento per Tipo Ricavo</button>
+          <button class="tnb" onclick="switchTab(this,'ov2')">Distribuzione per Stato</button>
+          <button class="tnb" onclick="switchTab(this,'ov3')">Iniziative Critiche</button>
+        </div>
+        <div class="tab-body">
+          <div class="tab-pane active" id="ov1">
+            <strong>Bar chart raggruppato per Tipo Ricavo</strong>: confronta, per ogni categoria di ricavo (es. Consulenza, Advisory…), il valore di <strong>Budget (col. N)</strong>, <strong>Ricavi OK (col. T, Stato=OK)</strong> e <strong>Hot Pipeline (col. T, Stato≠OK)</strong>. Un gruppo separato mostra i New Business. Il tooltip mostra la % di raggiungimento budget.
+          </div>
+          <div class="tab-pane" id="ov2">
+            <strong>Donut chart distribuzione stati</strong>: quante iniziative sono in ogni stato (OK, KO, To do, Contatto cliente, Presentata offerta, New Business). Permette di capire a colpo d'occhio quanto del portafoglio è ancora in lavorazione rispetto a quanto è già chiuso positivamente.
+          </div>
+          <div class="tab-pane" id="ov3">
+            <strong>Box iniziative critiche</strong>: elenca le iniziative con urgenza 🔴 Critica, cioè quelle il cui "Mese Inizio Ricavo" è già passato o cade entro il mese successivo alla data di riferimento, e che non sono ancora in stato OK. Include conteggio e valore budget totale a rischio.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMERCIALI -->
+    <section class="doc-section" id="commerciali">
+      <div class="sec-eyebrow"><span class="sec-tag green">Tab ②</span><span class="sec-num">§ 7</span></div>
+      <h2>Performance per <em>Commerciale</em></h2>
+      <p class="lead">Analisi individuale di ogni commerciale: avanzamento verso il budget, composizione del portafoglio iniziative e focus sulle urgenze critiche personali.</p>
+
+      <h3>Grafici principali</h3>
+      <div class="accordion">
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">📊</span><div><div class="acc-title">Budget vs Ricavi OK vs Hot Pipeline per Commerciale</div><div class="acc-sub">Confronto dei tre valori chiave per ogni persona</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Bar chart orizzontale con tre barre sovrapposte per ogni commerciale: <strong>Budget ponderato (col. N)</strong>, <strong>Ricavi 2026 OK (col. T, stato=OK)</strong> e <strong>Hot Pipeline (col. S, stato≠OK)</strong>. Permette di confrontare istantaneamente chi è più avanzato verso il proprio obiettivo.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">🍩</span><div><div class="acc-title">Distribuzione Status per Commerciale</div><div class="acc-sub">N. iniziative per stato divise per persona</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Stacked bar chart che mostra per ogni commerciale il numero di iniziative per stato. Utile per capire se un commerciale ha molte iniziative "in lavorazione" rispetto a quelle già chiuse o perse.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">🎯</span><div><div class="acc-title">% Raggiungimento Budget</div><div class="acc-sub">Ricavi OK / Budget ponderato per commerciale</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            <div class="progress-demo">
+              <div class="prog-row"><span class="prog-label">Commerciale A</span><div class="prog-track"><div class="prog-fill ok" style="width:78%"></div></div><span class="prog-pct">78%</span></div>
+              <div class="prog-row"><span class="prog-label">Commerciale B</span><div class="prog-track"><div class="prog-fill ok" style="width:54%"></div></div><span class="prog-pct">54%</span></div>
+              <div class="prog-row"><span class="prog-label">Commerciale C</span><div class="prog-track"><div class="prog-fill hot" style="width:92%"></div></div><span class="prog-pct">92%</span></div>
+            </div>
+            Bar chart con la percentuale di raggiungimento del budget (col. T OK / col. N) per ogni commerciale. Le barre sono colorate in base alla soglia (verde &gt;80%, ambra 50–80%, rosso &lt;50%).
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">🔴</span><div><div class="acc-title">Iniziative Critiche per Commerciale</div><div class="acc-sub">N. iniziative e budget a rischio con inizio entro 1 mese</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Grafico che mostra, per ogni commerciale, quante iniziative sono in stato 🔴 Critico (inizio già passato o entro 1 mese, non ancora OK) e il loro valore budget (col. N) totale. Permette di identificare chi ha più priorità operative immediate.
+          </div>
+        </div>
+      </div>
+
+      <h3>Tabella Dettaglio Commerciali</h3>
+      <p>In fondo al pannello una tabella riepiloga le metriche chiave per ogni commerciale:</p>
+      <table class="doc-table">
+        <thead><tr><th>Colonna</th><th>Calcolo</th></tr></thead>
+        <tbody>
+          <tr><td><code>Commerciale</code></td><td>Nome del commerciale</td></tr>
+          <tr><td><code>Budget (N)</code></td><td>Somma col. N — obiettivo budget</td></tr>
+          <tr><td><code>Ricavi OK (T)</code></td><td>Somma col. T dove Stato = OK</td></tr>
+          <tr><td><code>% Budget</code></td><td>Ricavi OK / Budget × 100</td></tr>
+          <tr><td><code>Delta</code></td><td>Ricavi OK − Budget (positivo = in avanti)</td></tr>
+          <tr><td><code>Hot Pipeline</code></td><td>Somma col. T dove Stato ≠ OK e col.T &gt; 0</td></tr>
+          <tr><td><code>N.</code></td><td>Totale iniziative</td></tr>
+          <tr><td><code>OK</code></td><td>Iniziative finalizzate</td></tr>
+          <tr><td><code>KO</code></td><td>Iniziative perse</td></tr>
+          <tr><td><code>NB</code></td><td>Iniziative New Business</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- CLIENTI -->
+    <section class="doc-section" id="clienti">
+      <div class="sec-eyebrow"><span class="sec-tag blue">Tab ③</span><span class="sec-num">§ 8</span></div>
+      <h2>Analisi per <em>Cliente</em></h2>
+      <p class="lead">Vista orientata ai clienti: concentrazione del portafoglio, valore per cliente e drill-down interattivo delle singole iniziative.</p>
+
+      <h3>Top 15 Clienti — grafico</h3>
+      <p>Il grafico a barre orizzontali mostra i 15 clienti con maggiore Budget (col. N), confrontando per ognuno <strong>Budget vs Ricavi OK vs Hot Pipeline</strong>. Cliccando su una riga della tabella sottostante il grafico si filtra automaticamente sul cliente selezionato, mostrando solo le sue iniziative.</p>
+
+      <div class="callout tip">
+        <span class="callout-icon">📌</span>
+        <div class="callout-body">
+          <strong>Drill-down interattivo</strong>
+          Clicca su qualsiasi riga della tabella "Portafoglio Clienti" per filtrare il grafico sul cliente scelto. Nella barra sopra il grafico appare il nome del cliente attivo. Clicca "✕ Mostra tutti" per tornare alla vista aggregata.
+        </div>
+      </div>
+
+      <h3>Tabella Portafoglio Clienti</h3>
+      <table class="doc-table">
+        <thead><tr><th>Colonna</th><th>Significato</th></tr></thead>
+        <tbody>
+          <tr><td><code>Cliente</code></td><td>Nome del cliente</td></tr>
+          <tr><td><code>Commerciale/i</code></td><td>Commerciali responsabili (può essere più d'uno)</td></tr>
+          <tr><td><code>Stato prevalente</code></td><td>Stato più frequente tra le iniziative di quel cliente</td></tr>
+          <tr><td><code>Budget (N)</code></td><td>Somma del budget (col. N) per il cliente</td></tr>
+          <tr><td><code>Ricavi OK (T)</code></td><td>Somma col. T su iniziative OK del cliente</td></tr>
+          <tr><td><code>Hot Pipeline</code></td><td>Valore col. T su iniziative non-OK del cliente</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- FINALIZZATE -->
+    <section class="doc-section" id="finalizzate">
+      <div class="sec-eyebrow"><span class="sec-tag green">Tab ④</span><span class="sec-num">§ 9</span></div>
+      <h2>✅ Iniziative <em>Finalizzate</em></h2>
+      <p class="lead">Lista completa di tutte le iniziative con <strong>Stato della proposta = OK</strong>. Rappresenta il consuntivo delle attività chiuse positivamente.</p>
+
+      <h3>Filtri disponibili</h3>
+      <div class="filter-row">
+        <span class="fc sel">Tutti i commerciali</span>
+        <span class="fc">Mario Rossi</span>
+        <span class="fc">Laura Bianchi</span>
+        <span class="fc">Marco Verdi</span>
+      </div>
+      <div class="filter-row">
+        <span class="fc sel">Budget + New Business</span>
+        <span class="fc">Solo Budget</span>
+        <span class="fc">Solo New Business</span>
+      </div>
+
+      <h3>Colonne della tabella</h3>
+      <table class="doc-table">
+        <thead><tr><th>Colonna</th><th>Fonte Excel</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td><code>Progetto</code></td><td>Descrizione iniziativa</td><td>Nome/titolo del progetto</td></tr>
+          <tr><td><code>Cliente</code></td><td>col. Cliente</td><td></td></tr>
+          <tr><td><code>Commerciale</code></td><td>col. Commerciale</td><td></td></tr>
+          <tr><td><code>Bud/NB</code></td><td>Budget/New Business</td><td>"B" = Budget, "NB" = New Business</td></tr>
+          <tr><td><code>Importo prop. (S)</code></td><td>col. S</td><td>Importo della proposta presentata</td></tr>
+          <tr><td><code>Ricavi 2026 (T)</code></td><td>col. T</td><td>Ricavi effettivi / attesi 2026</td></tr>
+          <tr><td><code>Backlog 2027 (U)</code></td><td>col. U</td><td>Quota che slitta al 2027</td></tr>
+          <tr><td><code>Tipo Ricavo</code></td><td>col. Tipo Ricavo</td><td>Categoria del ricavo</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout info">
+        <span class="callout-icon">Σ</span>
+        <div class="callout-body">
+          <strong>Riga subtotali</strong>
+          La tabella include una riga di subtotali che aggrega automaticamente i valori numerici (col. S, T, U) per la selezione corrente. Si aggiorna in tempo reale quando si cambiano i filtri.
+        </div>
+      </div>
+    </section>
+
+    <!-- PIPELINE -->
+    <section class="doc-section" id="pipeline">
+      <div class="sec-eyebrow"><span class="sec-tag amber">Tab ⑤</span><span class="sec-num">§ 10</span></div>
+      <h2>⏳ Pipeline da <em>Finalizzare</em></h2>
+      <p class="lead">Tutte le iniziative <strong>non ancora in stato OK</strong>, con un semaforo di urgenza basato sulla data di inizio ricavo prevista. È la sezione più operativa della dashboard.</p>
+
+      <h3>Sistema di urgenza</h3>
+      <div class="urg-row">
+        <div class="urg-chip critica">
+          <div class="urg-chip-dot"></div>
+          <div>
+            <div class="urg-chip-label">🔴 Critica</div>
+            <div class="urg-chip-sub">Avvio già passato o entro 1 mese</div>
+          </div>
+        </div>
+        <div class="urg-chip alta">
+          <div class="urg-chip-dot"></div>
+          <div>
+            <div class="urg-chip-label">🟡 Alta</div>
+            <div class="urg-chip-sub">Inizio entro 3 mesi</div>
+          </div>
+        </div>
+        <div class="urg-chip normale">
+          <div class="urg-chip-dot"></div>
+          <div>
+            <div class="urg-chip-label">🟢 Normale</div>
+            <div class="urg-chip-sub">Inizio oltre 3 mesi</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-icon">📅</span>
+        <div class="callout-body">
+          <strong>Come viene calcolata l'urgenza</strong>
+          La dashboard confronta il campo <code>Mese Inizio Ricavo</code> di ogni iniziativa con la data di riferimento estratta dal nome del file. Se il mese di inizio è già trascorso o cade nel mese successivo → 🔴 Critica. Entro 3 mesi → 🟡 Alta. Oltre → 🟢 Normale. Le iniziative senza data di inizio non ricevono un livello di urgenza.
+        </div>
+      </div>
+
+      <h3>Filtri disponibili</h3>
+      <div class="filter-row">
+        <span class="fc sel">Tutti i commerciali</span>
+        <span class="fc">Mario Rossi</span>
+        <span class="fc">Laura Bianchi</span>
+      </div>
+      <div class="filter-row">
+        <span class="fc sel">Tutti gli stati</span>
+        <span class="fc">KO</span>
+        <span class="fc">To do</span>
+        <span class="fc">Contatto cliente</span>
+        <span class="fc">Presentata offerta</span>
+      </div>
+      <div class="filter-row">
+        <span class="fc sel">Tutte le urgenze</span>
+        <span class="fc" style="color:var(--red-dk);border-color:#fca5a5">🔴 Critica</span>
+        <span class="fc" style="color:var(--amber-dk);border-color:#fcd34d">🟡 Alta</span>
+        <span class="fc" style="color:var(--emerald-dk);border-color:#6ee7b7">🟢 Normale</span>
+      </div>
+
+      <h3>Colonne della tabella</h3>
+      <table class="doc-table">
+        <thead><tr><th>Colonna</th><th>Contenuto</th></tr></thead>
+        <tbody>
+          <tr><td><code>Urg.</code></td><td>Semaforo urgenza (🔴🟡🟢) basato su Mese Inizio Ricavo</td></tr>
+          <tr><td><code>Stato</code></td><td>Stato corrente della proposta (KO, To do, Contatto cliente, ecc.)</td></tr>
+          <tr><td><code>Progetto</code></td><td>Descrizione dell'iniziativa</td></tr>
+          <tr><td><code>Cliente</code></td><td>Cliente di riferimento</td></tr>
+          <tr><td><code>Commerciale</code></td><td>Responsabile commerciale</td></tr>
+          <tr><td><code>Importo prop. (S)</code></td><td>Valore proposta presentata</td></tr>
+          <tr><td><code>Hot 🔥 (T)</code></td><td>Valore col. T (hot pipeline) — solo se &gt; 0</td></tr>
+          <tr><td><code>Backlog 2027</code></td><td>Valore col. U</td></tr>
+          <tr><td><code>Note</code></td><td>Eventuali note testuali dal file Excel</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- KO & NEW BIZ -->
+    <section class="doc-section" id="ko-nb">
+      <div class="sec-eyebrow"><span class="sec-tag red">Tab ⑥</span><span class="sec-num">§ 11</span></div>
+      <h2>📉 KO &amp; <em>New Business</em></h2>
+      <p class="lead">Tre sotto-sezioni dedicate alle iniziative perse, al new business non a budget e alla hot pipeline valorizzata ma non ancora finalizzata.</p>
+
+      <div class="tab-nav">
+        <div class="tab-nav-header">
+          <button class="tnb active" onclick="switchTab(this,'ko1')">Iniziative KO</button>
+          <button class="tnb" onclick="switchTab(this,'ko2')">New Business</button>
+          <button class="tnb" onclick="switchTab(this,'ko3')">Hot Pipeline</button>
+        </div>
+        <div class="tab-body">
+          <div class="tab-pane active" id="ko1">
+            <h4>Iniziative KO — attività perse o bloccate</h4>
+            Elenco di tutte le iniziative con <strong>Stato della proposta = KO</strong>. Per ogni riga mostra:
+            <ul>
+              <li>Progetto, Cliente, Commerciale</li>
+              <li><strong>Valore KO (col. N)</strong> — budget che si è perso</li>
+              <li>Tipo Ricavo e eventuali note</li>
+            </ul>
+            I KPI in cima mostrano il numero totale di iniziative KO e il loro valore budget aggregato. Utile per quantificare l'impatto delle perdite sul forecast annuale.
+          </div>
+          <div class="tab-pane" id="ko2">
+            <h4>New Business — iniziative non a budget</h4>
+            Lista delle iniziative con flag <strong>Budget/New Business = "New Business"</strong>: opportunità commerciali identificate durante l'anno che non erano incluse nel budget originale 2026.
+            <ul>
+              <li><strong>New Business totali</strong> — numero di iniziative NB</li>
+              <li><strong>New Biz OK</strong> — quante sono già finalizzate</li>
+              <li><strong>New Biz Hot</strong> — quante sono in pipeline valorizzata</li>
+              <li><strong>Copertura KO</strong> — quante delle KO sono parzialmente compensate dai NB</li>
+            </ul>
+          </div>
+          <div class="tab-pane" id="ko3">
+            <h4>Hot Pipeline — potenziale valorizzato non confermato</h4>
+            Iniziative con <strong>col. T &gt; 0 e Stato ≠ OK</strong>: proposte per cui esiste già un valore di ricavo atteso (col. T), ma che non sono ancora state formalmente finalizzate. È il valore "in bilico" che potrebbe diventare consuntivo.
+            <ul>
+              <li>Colonna <code>Hot (S)</code>: importo della proposta</li>
+              <li>Colonna <code>Ricavi 2026 (T)</code>: valore hot già valorizzato</li>
+              <li>Ordinabile per importo decrescente per identificare le opportunità di maggior valore</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONFRONTO -->
+    <section class="doc-section" id="confronto">
+      <div class="sec-eyebrow"><span class="sec-tag violet">Tab ⑦</span><span class="sec-num">§ 12</span></div>
+      <h2>🔀 Analisi <em>Comparativa</em></h2>
+      <p class="lead">Confronto automatico tra due rilevazioni (due file Excel con date diverse) per rilevare l'evoluzione del portafoglio: nuove iniziative entrate, variazioni di stato e delta di ricavi per commerciale.</p>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Richiede il secondo file</strong>
+          Questo pannello è attivo solo se alla schermata di caricamento è stato fornito anche il "File precedente — confronto (opzionale)". Senza il secondo file, la sezione mostra un messaggio esplicativo.
+        </div>
+      </div>
+
+      <h3>Sottosezioni del confronto</h3>
+      <div class="accordion">
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">📊</span><div><div class="acc-title">Ricavi 2026 OK per Commerciale — Confronto date</div><div class="acc-sub">Delta assoluto e percentuale tra le due rilevazioni</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Bar chart che mostra, per ogni commerciale, i Ricavi OK nella data precedente e nella data corrente, con il delta. Identifica chi ha fatto progressi e chi ha avuto regressioni (es. iniziative che sono tornate da OK a un altro stato).
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">🔄</span><div><div class="acc-title">Variazione Stato Iniziative</div><div class="acc-sub">Tipo Ricavo e Budget a confronto</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Analisi delle variazioni di stato tra le due date, raggruppata per Tipo Ricavo. Mostra quante iniziative sono migliorate (es. da "To do" a "OK") o peggiorate (es. da "Contatto cliente" a "KO") nel periodo intercorso.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">🆕</span><div><div class="acc-title">Nuove Iniziative</div><div class="acc-sub">Presenti nel file corrente ma non nel precedente</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Lista delle iniziative che compaiono nel file più recente ma non erano presenti in quello precedente. Indica nuove opportunità identificate nel periodo. Le colonne mostrano progetto, cliente, commerciale, budget e stato corrente.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">↕️</span><div><div class="acc-title">Variazioni di Stato</div><div class="acc-sub">Modifiche di stato tra le due rilevazioni</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Tabella che mostra le iniziative il cui stato è cambiato tra le due rilevazioni. Le colonne includono:
+            <ul>
+              <li><code>Stato precedente</code> — stato al momento del file precedente</li>
+              <li><code>Stato corrente</code> — stato attuale</li>
+              <li><code>Hot (S)</code> — valore proposta</li>
+              <li><code>Ricavi 2026 (T)</code> — valore ricavi attuale</li>
+            </ul>
+            Particolarmente utile per identificare le iniziative che sono diventate OK (successi) o KO (perdite) nel periodo.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- URGENZA -->
+    <section class="doc-section" id="urgenza">
+      <div class="sec-eyebrow"><span class="sec-tag amber">Concetti chiave</span><span class="sec-num">§ 13</span></div>
+      <h2>Urgenza &amp; criticità</h2>
+      <p class="lead">Il sistema di urgenza è uno degli elementi più operativi della dashboard. Segnala proattivamente le iniziative che rischiano di slittare o non essere finalizzate in tempo.</p>
+
+      <h3>Come viene calcolata</h3>
+      <ol class="step-list">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-content">La dashboard legge la <strong>data di riferimento</strong> dal nome del file (es. <code>20260415</code> → 15 aprile 2026).</div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-content">Per ogni iniziativa non in stato OK, confronta il campo <strong>Mese Inizio Ricavo</strong> con la data di riferimento.</div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-content">Assegna il livello di urgenza: <span class="badge badge-danger">🔴 Critica</span> se l'avvio è già passato o entro 1 mese; <span class="badge badge-warn">🟡 Alta</span> entro 3 mesi; <span class="badge badge-ok">🟢 Normale</span> oltre 3 mesi.</div>
+        </li>
+      </ol>
+
+      <h3>Dove viene visualizzata</h3>
+      <table class="doc-table">
+        <thead><tr><th>Sezione</th><th>Come appare</th></tr></thead>
+        <tbody>
+          <tr><td>① Executive Overview</td><td>Box riepilogativo con conteggio e budget totale delle 🔴 Critiche</td></tr>
+          <tr><td>② Commerciali</td><td>Grafico "Iniziative Critiche per Commerciale" con n. e budget a rischio</td></tr>
+          <tr><td>⑤ Pipeline</td><td>Colonna "Urg." nella tabella + filtri 🔴🟡🟢 in cima</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>Iniziativa critica senza data di inizio</strong>
+          Le iniziative prive del campo "Mese Inizio Ricavo" non ricevono un livello di urgenza e non vengono incluse nel conteggio delle critiche. Se stai notando un numero di critiche inferiore al previsto, verifica che tutte le righe abbiano la data di inizio compilata nel file Excel.
+        </div>
+      </div>
+    </section>
+
+    <!-- STATI -->
+    <section class="doc-section" id="stati">
+      <div class="sec-eyebrow"><span class="sec-tag slate">Glossario</span><span class="sec-num">§ 14</span></div>
+      <h2>Glossario degli stati</h2>
+      <p class="lead">La colonna <code>Stato della proposta</code> del file Excel determina in quale sezione appare ogni iniziativa e come viene aggregata nei calcoli.</p>
+
+      <div class="stato-flow">
+        <div class="stato-chip" style="background:var(--emerald-lt);border-color:#6ee7b7;color:var(--emerald-dk)">✅ OK</div>
+        <div style="color:var(--ink4);padding:6px;font-size:18px;line-height:1">→</div>
+        <div class="stato-chip" style="background:var(--red-lt);border-color:#fca5a5;color:var(--red-dk)">❌ KO</div>
+        <div style="color:var(--ink4);padding:6px;font-size:18px;line-height:1">·</div>
+        <div class="stato-chip" style="background:var(--blue-lt);border-color:#93c5fd;color:var(--blue-dk)">📋 To do</div>
+        <div style="color:var(--ink4);padding:6px;font-size:18px;line-height:1">·</div>
+        <div class="stato-chip" style="background:var(--amber-lt);border-color:#fcd34d;color:var(--amber-dk)">📞 Contatto cliente</div>
+        <div style="color:var(--ink4);padding:6px;font-size:18px;line-height:1">·</div>
+        <div class="stato-chip" style="background:var(--violet-lt);border-color:#c4b5fd;color:#4c1d95">📄 Presentata offerta</div>
+        <div style="color:var(--ink4);padding:6px;font-size:18px;line-height:1">·</div>
+        <div class="stato-chip" style="background:#f0f9ff;border-color:#7dd3fc;color:#075985">🆕 New Business</div>
+      </div>
+
+      <table class="doc-table">
+        <thead><tr><th>Stato</th><th>Significato</th><th>Dove compare</th><th>Incluso in</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-ok">OK</span></td><td>Iniziativa finalizzata, ricavi confermati</td><td>Tab ④ Finalizzate</td><td>Ricavi Actual OK (KPI), % raggiungimento</td></tr>
+          <tr><td><span class="badge badge-danger">KO</span></td><td>Iniziativa persa o bloccata definitivamente</td><td>Tab ⑥ KO &amp; NB</td><td>Contatore KO, valore budget perso</td></tr>
+          <tr><td><span class="badge badge-slate">To do</span></td><td>Iniziativa pianificata, non ancora avviata</td><td>Tab ⑤ Pipeline</td><td>Pipeline da finalizzare, urgenza</td></tr>
+          <tr><td><span class="badge badge-warn">Contatto cliente</span></td><td>Contatto avviato, proposta non ancora presentata</td><td>Tab ⑤ Pipeline</td><td>Pipeline da finalizzare, urgenza</td></tr>
+          <tr><td><span class="badge badge-violet">Presentata offerta</span></td><td>Offerta formale inviata al cliente, in attesa di risposta</td><td>Tab ⑤ Pipeline</td><td>Pipeline da finalizzare, hot pipeline se col.T&gt;0</td></tr>
+          <tr><td><span class="badge badge-blue">New Business</span></td><td>Opportunità extra-budget identificata nel corso dell'anno</td><td>Tab ⑥ KO &amp; NB</td><td>Contatore NB, separato dal budget</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Flag Budget/New Business</h3>
+      <p>Oltre allo stato, ogni iniziativa ha un flag che indica se rientra nel budget originale o è un'opportunità di sviluppo aggiuntiva:</p>
+      <table class="doc-table">
+        <thead><tr><th>Valore</th><th>Significato</th><th>Visibile in</th></tr></thead>
+        <tbody>
+          <tr><td><code>"Budget"</code></td><td>L'iniziativa era inclusa nel budget commerciale 2026 originale</td><td>Filtro "Solo Budget" nei pannelli ④ e ⑥</td></tr>
+          <tr><td><code>"New Business"</code></td><td>Opportunità identificata e aggiunta durante l'anno, non a budget</td><td>Filtro "Solo New Business", tab ⑥, KPI dedicato</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Hot Pipeline — definizione</h3>
+      <p>Un'iniziativa è considerata <strong>Hot Pipeline</strong> quando ha <code>col. T (Ricavi 2026) &gt; 0</code> e <code>Stato ≠ OK</code>. Rappresenta il valore già valorizzato ma non ancora consolidato come ricavo confermato.</p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="doc-section" id="faq">
+      <div class="sec-eyebrow"><span class="sec-tag slate">Supporto</span><span class="sec-num">§ 15</span></div>
+      <h2>Domande frequenti</h2>
+      <div class="accordion">
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">❓</span><div><div class="acc-title">La dashboard non riconosce la data dal nome del file</div><div class="acc-sub">La data di riferimento mostra la data odierna invece di quella del file</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Il nome del file deve contenere una sequenza di 8 cifre nel formato <code>YYYYMMDD</code> (es. <code>20260415</code>). Se il file ha una data in formato diverso (es. <code>15-04-2026</code> o <code>April2026</code>), la dashboard non la riconosce e usa la data odierna come fallback. Rinomina il file prima di caricarlo.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">❓</span><div><div class="acc-title">Alcune iniziative non appaiono in nessun pannello</div><div class="acc-sub">Righe del file Excel che sembrano sparite</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Verifica che la colonna <code>Stato della proposta</code> sia compilata per quelle righe. Le righe con stato vuoto o con un valore non riconosciuto dalla dashboard (es. errori di digitazione) vengono saltate. Controlla anche che non ci siano righe vuote di separazione nel file.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">❓</span><div><div class="acc-title">Il pannello ⑦ Confronto è vuoto o non appare</div><div class="acc-sub">La sezione comparativa non mostra dati</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Il pannello ⑦ richiede che nella schermata di caricamento sia stato fornito sia il file principale sia il "File precedente — confronto". Se è stato caricato solo un file, la sezione confronto rimane vuota. Torna alla schermata iniziale con "↺ Ricarica" e carica entrambi i file.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">❓</span><div><div class="acc-title">I valori numerici appaiono come 0 o come NaN</div><div class="acc-sub">Budget, ricavi o hot pipeline mostrano valori errati</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Le colonne numeriche (N, S, T, U) devono contenere valori numerici puri nel file Excel. Cause comuni di errore:
+            <ul>
+              <li>La cella è formattata come testo (controllare il formato cella in Excel)</li>
+              <li>Il numero contiene il simbolo € o la virgola come separatore di migliaia</li>
+              <li>La cella contiene una formula con un errore (#VALORE!, #N/D, ecc.)</li>
+              <li>Il nome della colonna nel file non corrisponde esattamente a quello atteso</li>
+            </ul>
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">❓</span><div><div class="acc-title">Il numero di iniziative critiche sembra sbagliato</div><div class="acc-sub">Meno (o più) critiche del previsto</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Verifica che: (1) il campo <code>Mese Inizio Ricavo</code> sia compilato per le iniziative interessate, (2) il nome del file contenga la data corretta nel formato YYYYMMDD — la data del file è la base per il calcolo, (3) le iniziative in stato OK non vengono conteggiate come critiche anche se la loro data di inizio è passata (il calcolo si applica solo alle non-OK).
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span style="font-size:15px">❓</span><div><div class="acc-title">Come aggiornare la dashboard ogni settimana?</div><div class="acc-sub">Workflow per l'aggiornamento periodico</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Il workflow consigliato è:
+            <ul>
+              <li>Esporta il nuovo file Excel con la data odierna nel nome</li>
+              <li>Apri la dashboard HTML nel browser</li>
+              <li>Nella schermata di caricamento, carica il nuovo file come "principale" e il file della settimana scorsa come "confronto"</li>
+              <li>Clicca "Genera Dashboard →"</li>
+              <li>La sezione ⑦ mostrerà automaticamente tutte le variazioni</li>
+            </ul>
+            Non è necessario modificare il file HTML: la dashboard si aggiorna leggendo i dati dal file Excel.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+
+  <footer class="doc-footer">
+    <span>Engage Finance · Commercial Monitor 2026 · Manuale Utente v5.0</span>
+    <span>Direzione Finance · Aprile 2026</span>
+  </footer>
+</main>
+
+<button class="back-top" id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Torna in cima">↑</button>
+
+<script>
+// ── ACCORDION ──
+function toggleAcc(header) {
+  const item = header.parentElement;
+  const body = item.querySelector('.acc-body');
+  item.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// ── TAB NAV ──
+function switchTab(btn, paneId) {
+  const nav = btn.closest('.tab-nav');
+  nav.querySelectorAll('.tnb').forEach(b => b.classList.remove('active'));
+  nav.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(paneId).classList.add('active');
+}
+
+// ── SIDEBAR ACTIVE ──
+function setActive(el) {
+  document.querySelectorAll('.sb-link').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── SCROLL SPY ──
+const sections = document.querySelectorAll('.doc-section');
+const navLinks = document.querySelectorAll('.sb-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      const id = entry.target.id;
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + id) link.classList.add('active');
+      });
+    }
+  });
+}, { threshold: 0.08, rootMargin: '-60px 0px -55% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// ── BACK TO TOP ──
+window.addEventListener('scroll', () => {
+  document.getElementById('back-top').classList.toggle('visible', window.scrollY > 400);
+});
+
+// ── SEARCH ──
+function searchDocs(query) {
+  document.querySelectorAll('mark.hl').forEach(el => el.replaceWith(document.createTextNode(el.textContent)));
+  if (!query || query.length < 2) return;
+  const content = document.querySelector('.content');
+  const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  let node;
+  while (node = walker.nextNode()) {
+    if (node.nodeValue.trim() && !['SCRIPT','STYLE','INPUT'].includes(node.parentElement.tagName))
+      textNodes.push(node);
+  }
+  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  let first = null;
+  textNodes.forEach(tn => {
+    if (re.test(tn.nodeValue)) {
+      const span = document.createElement('span');
+      span.innerHTML = tn.nodeValue.replace(re, '<mark class="hl">$1</mark>');
+      tn.parentNode.replaceChild(span, tn);
+      if (!first) first = span;
+    }
+  });
+  if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ── HERO WAVE ANIMATION ──
+window.addEventListener('load', () => {
+  const bars = document.querySelectorAll('.hero-wave-bar');
+  const heights = [28,45,62,38,75,55,90,68,82,50,70,88];
+  bars.forEach((b, i) => {
+    b.style.height = '4px';
+    setTimeout(() => { b.style.transition = `height ${0.4 + i*0.05}s ease`; b.style.height = heights[i] + '%'; }, 200 + i*40);
+  });
+  setTimeout(() => {
+    sections.forEach(s => {
+      if (s.getBoundingClientRect().top < window.innerHeight) s.classList.add('visible');
+    });
+  }, 150);
+});
+</script>
+</body>
+</html>
