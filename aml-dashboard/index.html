@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manuale Utente — AML Reporting Dashboard · Mediobanca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:       #0a0e1a;
+  --ink2:      #1e2a3a;
+  --ink3:      #5a6a80;
+  --ink4:      #8a9ab0;
+  --paper:     #f6f7fa;
+  --surface:   #ffffff;
+  --rule:      #e2e8f0;
+  --rule2:     #c8d5e4;
+
+  --teal:      #0891b2;
+  --teal-lt:   #e0f7fc;
+  --teal-dk:   #0e6e8a;
+  --red:       #dc2626;
+  --red-lt:    #fef2f2;
+  --red-dk:    #991b1b;
+  --amber:     #d97706;
+  --amber-lt:  #fffbeb;
+  --green:     #16a34a;
+  --green-lt:  #f0fdf4;
+  --blue:      #2563eb;
+  --blue-lt:   #eff6ff;
+  --purple:    #7c3aed;
+  --purple-lt: #f5f3ff;
+
+  --sidebar-w: 280px;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Mulish', sans-serif;
+  --serif: 'Instrument Serif', serif;
+  --display: 'Syne', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.65;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 2px; }
+
+.sb-brand {
+  padding: 24px 20px 18px;
+  border-bottom: 1px solid #1e293b;
+  background: linear-gradient(160deg, #0a0e1a 0%, #0c1828 100%);
+}
+.sb-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.sb-logo-icon {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--teal), #0e6e8a);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.sb-logo-text { font-family: var(--mono); font-size: 11px; font-weight: 500; color: #94a3b8; line-height: 1.3; }
+.sb-logo-text strong { color: #e2e8f0; display: block; font-size: 12px; }
+.sb-badge-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.sb-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: .3px;
+}
+.sb-badge.v { background: rgba(8,145,178,.2); color: #67e8f9; border: 1px solid rgba(8,145,178,.3); }
+.sb-badge.e { background: rgba(220,38,38,.15); color: #fca5a5; border: 1px solid rgba(220,38,38,.25); }
+
+.sb-search-wrap { padding: 10px 14px; border-bottom: 1px solid #1e293b; }
+.sb-search-inner { position: relative; }
+.sb-search-inner svg { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #475569; }
+.sb-search-inner input {
+  width: 100%;
+  background: #111827;
+  border: 1px solid #1e293b;
+  border-radius: 5px;
+  padding: 6px 10px 6px 28px;
+  font-family: var(--sans);
+  font-size: 12px;
+  color: #cbd5e1;
+  outline: none;
+}
+.sb-search-inner input::placeholder { color: #374151; }
+.sb-search-inner input:focus { border-color: var(--teal); }
+
+.sb-nav { flex: 1; padding: 6px 0 24px; }
+.sb-section-lbl {
+  padding: 14px 20px 4px;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #334155;
+}
+.sb-group { margin-bottom: 2px; }
+.sb-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 20px;
+  cursor: pointer;
+  font-family: var(--display);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  user-select: none;
+  transition: color .15s;
+}
+.sb-group-header:hover { color: #94a3b8; }
+.sb-group-header.open { color: var(--teal); }
+.sb-group-arrow { font-size: 9px; transition: transform .2s; }
+.sb-group-header.open .sb-group-arrow { transform: rotate(90deg); }
+.sb-group-children { display: none; }
+.sb-group-children.open { display: block; }
+
+.sb-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 20px 7px 28px;
+  cursor: pointer;
+  font-size: 12.5px;
+  color: #64748b;
+  border-left: 2px solid transparent;
+  transition: all .15s;
+  text-decoration: none;
+  line-height: 1.3;
+}
+.sb-item:hover { color: #cbd5e1; background: rgba(255,255,255,.03); }
+.sb-item.active { color: #67e8f9; border-left-color: var(--teal); background: rgba(8,145,178,.08); font-weight: 600; }
+.sb-item-solo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 20px;
+  cursor: pointer;
+  font-size: 12.5px;
+  color: #64748b;
+  border-left: 2px solid transparent;
+  transition: all .15s;
+  text-decoration: none;
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: .3px;
+}
+.sb-item-solo:hover { color: #cbd5e1; background: rgba(255,255,255,.03); }
+.sb-item-solo.active { color: #67e8f9; border-left-color: var(--teal); background: rgba(8,145,178,.08); }
+.sb-dot { width: 5px; height: 5px; border-radius: 50%; background: #334155; flex-shrink: 0; }
+.sb-item.active .sb-dot { background: var(--teal); }
+.sb-alert-badge {
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.sb-amber-badge {
+  margin-left: auto;
+  background: var(--amber);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+/* ── MAIN ── */
+.main { flex: 1; min-width: 0; }
+
+/* ── HERO ── */
+.hero {
+  background: var(--ink);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero-inner {
+  padding: 56px 60px 48px;
+  position: relative;
+  z-index: 1;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 300px at 80% 50%, rgba(8,145,178,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 400px at 10% 80%, rgba(220,38,38,.06) 0%, transparent 60%);
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--teal);
+  background: rgba(8,145,178,.12);
+  border: 1px solid rgba(8,145,178,.25);
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--display);
+  font-size: 38px;
+  font-weight: 700;
+  color: #f8fafc;
+  line-height: 1.1;
+  max-width: 620px;
+  margin-bottom: 8px;
+  letter-spacing: -.5px;
+}
+.hero h1 span { color: var(--teal); }
+.hero-sub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+.hero p { color: #64748b; font-size: 14px; max-width: 540px; line-height: 1.75; }
+.hero-stats {
+  display: flex;
+  gap: 0;
+  margin-top: 36px;
+  border-top: 1px solid #1e293b;
+  padding-top: 24px;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  flex: 1;
+  min-width: 120px;
+  padding-right: 24px;
+  border-right: 1px solid #1e293b;
+  margin-right: 24px;
+}
+.hero-stat:last-child { border-right: none; margin-right: 0; }
+.hero-stat-val { font-family: var(--mono); font-size: 22px; font-weight: 500; color: #f1f5f9; line-height: 1; margin-bottom: 4px; }
+.hero-stat-val.red { color: #fca5a5; }
+.hero-stat-val.amber { color: #fbbf24; }
+.hero-stat-val.teal { color: #67e8f9; }
+.hero-stat-lbl { font-size: 11px; color: #475569; font-family: var(--mono); letter-spacing: .5px; }
+
+/* ── CONTENT ── */
+.content { padding: 0 60px 80px; max-width: 920px; }
+
+/* ── SECTION ── */
+.doc-section {
+  padding-top: 52px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 44px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.doc-section.visible { opacity: 1; transform: translateY(0); }
+.doc-section:last-child { border-bottom: none; }
+
+.section-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.sec-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+.sec-tag.teal   { color: var(--teal-dk); background: var(--teal-lt); }
+.sec-tag.red    { color: var(--red-dk);  background: var(--red-lt); }
+.sec-tag.amber  { color: #92400e;        background: var(--amber-lt); }
+.sec-tag.green  { color: #14532d;        background: var(--green-lt); }
+.sec-tag.blue   { color: #1e3a8a;        background: var(--blue-lt); }
+.sec-tag.purple { color: #4c1d95;        background: var(--purple-lt); }
+.sec-tag.dark   { color: #e2e8f0;        background: #1e293b; }
+.sec-num { font-family: var(--mono); font-size: 11px; color: var(--ink4); }
+
+.doc-section h2 {
+  font-family: var(--display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.2;
+  letter-spacing: -.3px;
+}
+.doc-section h3 {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink2);
+  margin: 28px 0 10px;
+  letter-spacing: -.1px;
+}
+.doc-section p { color: var(--ink2); font-size: 14px; margin-bottom: 14px; line-height: 1.8; }
+.doc-section p:last-child { margin-bottom: 0; }
+.lead { font-size: 15.5px !important; color: var(--ink) !important; font-weight: 400; line-height: 1.85 !important; }
+
+/* ── CALLOUTS ── */
+.callout { display: flex; gap: 13px; padding: 14px 16px; border-radius: 6px; margin: 18px 0; border-left: 3px solid; }
+.callout-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.callout-body { flex: 1; font-size: 13px; line-height: 1.65; }
+.callout-body strong { display: block; font-family: var(--display); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; }
+.callout.info   { background: var(--blue-lt);   border-color: #93c5fd; color: #1e3a8a; }
+.callout.warn   { background: var(--amber-lt);  border-color: #fcd34d; color: #92400e; }
+.callout.danger { background: var(--red-lt);    border-color: #fca5a5; color: var(--red-dk); }
+.callout.tip    { background: var(--green-lt);  border-color: #86efac; color: #14532d; }
+.callout.teal   { background: var(--teal-lt);   border-color: #67e8f9; color: var(--teal-dk); }
+
+/* ── KPI GRID ── */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); gap: 10px; margin: 18px 0; }
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 7px;
+  padding: 13px 15px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow .2s, transform .2s;
+}
+.kpi-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.07); transform: translateY(-1px); }
+.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--kc, var(--teal)); }
+.kpi-card-label { font-family: var(--mono); font-size: 8.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--ink3); margin-bottom: 6px; }
+.kpi-card-value { font-family: var(--mono); font-size: 20px; font-weight: 500; color: var(--ink); line-height: 1; }
+.kpi-card-sub { font-size: 11px; color: var(--ink3); margin-top: 4px; line-height: 1.4; }
+.kpi-card-badge { display: inline-block; font-family: var(--mono); font-size: 9px; padding: 2px 7px; border-radius: 10px; margin-top: 5px; }
+
+/* ── ALERT STRIP ── */
+.alert-strip {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #1a0a0a;
+  border: 1px solid rgba(220,38,38,.3);
+  border-radius: 7px;
+  margin: 16px 0;
+  align-items: flex-start;
+}
+.alert-strip-icon { font-size: 16px; flex-shrink: 0; }
+.alert-strip-body { flex: 1; font-size: 13px; color: #fca5a5; line-height: 1.6; }
+.alert-strip-body strong { color: #fecaca; display: block; font-family: var(--display); font-size: 11px; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 3px; }
+
+/* ── STATUS FLOW ── */
+.status-flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+.sf-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 12px;
+  flex: 1;
+  min-width: 120px;
+}
+.sf-step-num {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+.sf-step-lbl { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+.sf-arrow { font-size: 16px; color: var(--rule2); flex-shrink: 0; }
+
+/* ── ACCORDION ── */
+.accordion { margin: 18px 0; }
+.acc-item { border: 1px solid var(--rule); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+.acc-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; cursor: pointer; background: var(--surface); user-select: none; gap: 12px; }
+.acc-header-l { display: flex; align-items: center; gap: 11px; }
+.acc-icon { font-size: 15px; flex-shrink: 0; }
+.acc-title { font-size: 14px; font-weight: 600; color: var(--ink); font-family: var(--display); }
+.acc-sub { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+.acc-chevron { font-size: 11px; color: var(--ink4); transition: transform .22s; flex-shrink: 0; }
+.acc-item.open .acc-chevron { transform: rotate(180deg); }
+.acc-body { display: none; padding: 0 16px 14px; font-size: 13.5px; line-height: 1.7; color: var(--ink2); background: var(--surface); border-top: 1px solid var(--rule); }
+.acc-body.open { display: block; padding-top: 13px; }
+.acc-body ul { margin: 8px 0 8px 18px; }
+.acc-body li { margin-bottom: 5px; }
+.acc-body strong { color: var(--ink); }
+
+/* ── TABLE ── */
+.doc-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+.doc-table th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  border-bottom: 2px solid var(--rule2);
+  padding: 8px 12px;
+  background: #f8fafc;
+}
+.doc-table td { padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.5; }
+.doc-table tr:last-child td { border-bottom: none; }
+.doc-table tr:hover td { background: #fafcff; }
+
+/* ── BADGES ── */
+code { font-family: var(--mono); font-size: 11.5px; background: #f1f5f9; border: 1px solid var(--rule); border-radius: 3px; padding: 1px 6px; color: var(--purple); }
+.badge { display: inline-block; font-family: var(--mono); font-size: 9px; padding: 2px 7px; border-radius: 3px; font-weight: 500; }
+.badge-danger { background: var(--red-lt); color: var(--red-dk); border: 1px solid #fca5a5; }
+.badge-warn   { background: var(--amber-lt); color: #92400e; border: 1px solid #fcd34d; }
+.badge-ok     { background: var(--green-lt); color: #14532d; border: 1px solid #86efac; }
+.badge-teal   { background: var(--teal-lt); color: var(--teal-dk); border: 1px solid #a5f3fc; }
+.badge-blue   { background: var(--blue-lt); color: #1e3a8a; border: 1px solid #93c5fd; }
+
+/* ── STEP LIST ── */
+.step-list { list-style: none; margin: 14px 0; }
+.step-list li { display: flex; gap: 13px; padding: 11px 0; border-bottom: 1px solid var(--rule); align-items: flex-start; }
+.step-list li:last-child { border-bottom: none; }
+.step-num { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--teal); color: #fff; font-family: var(--mono); font-size: 10px; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+.step-content { flex: 1; font-size: 13.5px; line-height: 1.65; color: var(--ink2); }
+.step-content strong { color: var(--ink); }
+
+/* ── RISK INDICATOR ── */
+.risk-row { display: flex; gap: 8px; margin: 14px 0; flex-wrap: wrap; }
+.risk-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  flex: 1;
+  min-width: 140px;
+  border: 1px solid;
+}
+.risk-chip .rc-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.risk-chip .rc-lbl { font-size: 12px; font-weight: 600; }
+.risk-chip .rc-val { font-family: var(--mono); font-size: 18px; font-weight: 500; margin-left: auto; }
+.risk-chip.high  { background: rgba(220,38,38,.06);  border-color: rgba(220,38,38,.2); color: var(--red-dk); }
+.risk-chip.med   { background: rgba(217,119,6,.06);  border-color: rgba(217,119,6,.2); color: #92400e; }
+.risk-chip.low   { background: rgba(22,163,74,.06);  border-color: rgba(22,163,74,.2); color: #14532d; }
+.risk-chip.irr   { background: rgba(8,145,178,.06);  border-color: rgba(8,145,178,.2); color: var(--teal-dk); }
+.risk-chip.high .rc-dot { background: var(--red); }
+.risk-chip.med  .rc-dot { background: var(--amber); }
+.risk-chip.low  .rc-dot { background: var(--green); }
+.risk-chip.irr  .rc-dot { background: var(--teal); }
+
+/* ── FILTER BAR MOCK ── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+.filter-lbl { font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: var(--ink3); margin-right: 4px; }
+.filter-chip {
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  border: 1px solid var(--rule2);
+  color: var(--ink3);
+  background: #f8fafc;
+  cursor: default;
+}
+.filter-chip.sel { background: var(--teal); border-color: var(--teal); color: #fff; }
+.filter-sep { width: 1px; height: 20px; background: var(--rule); }
+
+/* ── NAV MAP ── */
+.nav-map { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 20px; margin: 18px 0; }
+.nm-title { font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: var(--ink3); margin-bottom: 14px; }
+.nm-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.nm-solo { display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 5px; background: #f8fafc; border: 1px solid var(--rule); font-size: 13px; font-weight: 600; color: var(--ink); flex: 1; font-family: var(--display); }
+.nm-group { flex: 1; }
+.nm-group-hdr { display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 5px 5px 0 0; background: var(--teal-lt); border: 1px solid rgba(8,145,178,.2); font-size: 12px; font-weight: 700; color: var(--teal-dk); font-family: var(--display); }
+.nm-children { border: 1px solid rgba(8,145,178,.15); border-top: none; border-radius: 0 0 5px 5px; overflow: hidden; }
+.nm-child { display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 24px; font-size: 12px; color: var(--ink2); border-bottom: 1px solid var(--rule); background: var(--surface); }
+.nm-child:last-child { border-bottom: none; }
+.nm-badge { margin-left: auto; font-family: var(--mono); font-size: 9px; padding: 1px 6px; border-radius: 8px; }
+.nm-badge.red { background: var(--red); color: #fff; }
+.nm-badge.amber { background: var(--amber); color: #fff; }
+.nm-badge.teal { background: var(--teal); color: #fff; }
+
+/* ── PROGRESS (pipeline) ── */
+.pipeline {
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+  height: 36px;
+  margin: 14px 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+}
+.pipeline-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+  padding: 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 10px;
+  gap: 4px;
+}
+
+/* ── HIGHLIGHT ── */
+mark.hl { background: #fef9c3; border-radius: 2px; color: inherit; }
+
+/* ── BACK TO TOP ── */
+.back-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 38px; height: 38px;
+  background: var(--ink);
+  color: var(--teal);
+  border: 1px solid rgba(8,145,178,.4);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  opacity: 0;
+  transition: opacity .3s, transform .3s;
+  transform: translateY(10px);
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  z-index: 50;
+}
+.back-top.visible { opacity: 1; transform: translateY(0); }
+.back-top:hover { background: var(--teal); color: #fff; }
+
+/* ── FOOTER ── */
+.doc-footer {
+  padding: 24px 60px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink4);
+  max-width: 920px;
+}
+
+@media (max-width: 860px) {
+  .sidebar { display: none; }
+  .content { padding: 0 20px 60px; }
+  .hero-inner { padding: 36px 20px 32px; }
+  .hero h1 { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-logo-row">
+      <div class="sb-logo-icon">🛡️</div>
+      <div class="sb-logo-text"><strong>AML Reporting</strong>Mediobanca S.p.A.</div>
+    </div>
+    <div class="sb-badge-row">
+      <span class="sb-badge v">v2.0</span>
+      <span class="sb-badge e">Manuale Utente</span>
+    </div>
+  </div>
+  <div class="sb-search-wrap">
+    <div class="sb-search-inner">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Cerca nel manuale…" oninput="searchDocs(this.value)">
+    </div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-section-lbl">Introduzione</div>
+    <a class="sb-item-solo active" href="#intro" onclick="setActive(this)">📋 Panoramica generale</a>
+    <a class="sb-item-solo" href="#struttura" onclick="setActive(this)">🗺 Struttura & Navigazione</a>
+    <a class="sb-item-solo" href="#dashboard" onclick="setActive(this)">🏠 Dashboard — Cruscotto AML</a>
+
+    <div class="sb-section-lbl">Clientela & Rischio</div>
+    <div class="sb-group">
+      <div class="sb-group-header open" onclick="toggleGroup(this)">👥 Censimento <span class="sb-group-arrow">▶</span></div>
+      <div class="sb-group-children open">
+        <a class="sb-item" href="#anagrafiche" onclick="setActive(this)"><div class="sb-dot"></div> Anagrafiche & Rischio</a>
+        <a class="sb-item" href="#residenza" onclick="setActive(this)"><div class="sb-dot"></div> Residenza Internazionale</a>
+        <a class="sb-item" href="#legami" onclick="setActive(this)"><div class="sb-dot"></div> Titolarità & Assetti</a>
+        <a class="sb-item" href="#rapporti" onclick="setActive(this)"><div class="sb-dot"></div> Rapporti continuativi</a>
+      </div>
+    </div>
+
+    <div class="sb-section-lbl">ADV & SOS</div>
+    <div class="sb-group">
+      <div class="sb-group-header" onclick="toggleGroup(this)">📋 Adeguate Verifiche <span class="sb-amber-badge">307</span><span class="sb-group-arrow">▶</span></div>
+      <div class="sb-group-children">
+        <a class="sb-item" href="#adv" onclick="setActive(this)"><div class="sb-dot"></div> Panoramica ADV</a>
+        <a class="sb-item" href="#scadenzario" onclick="setActive(this)"><div class="sb-dot"></div> Scadenzario ADV</a>
+      </div>
+    </div>
+    <div class="sb-group">
+      <div class="sb-group-header" onclick="toggleGroup(this)">🚨 SOS <span class="sb-alert-badge">110</span><span class="sb-group-arrow">▶</span></div>
+      <div class="sb-group-children">
+        <a class="sb-item" href="#sos" onclick="setActive(this)"><div class="sb-dot"></div> Panoramica SOS</a>
+        <a class="sb-item" href="#sos-nominativi" onclick="setActive(this)"><div class="sb-dot"></div> Dettaglio nominativi</a>
+      </div>
+    </div>
+
+    <div class="sb-section-lbl">Operatività</div>
+    <div class="sb-group">
+      <div class="sb-group-header" onclick="toggleGroup(this)">💸 Movimenti <span class="sb-alert-badge">772</span><span class="sb-group-arrow">▶</span></div>
+      <div class="sb-group-children">
+        <a class="sb-item" href="#movimenti" onclick="setActive(this)"><div class="sb-dot"></div> Operatività & Movimenti</a>
+        <a class="sb-item" href="#inattese" onclick="setActive(this)"><div class="sb-dot"></div> Operazioni Inattese</a>
+      </div>
+    </div>
+    <a class="sb-item-solo" href="#pep" onclick="setActive(this)">👁 PEP e Liste sanzionatorie</a>
+
+    <div class="sb-section-lbl">Strumenti</div>
+    <a class="sb-item-solo" href="#base-dati" onclick="setActive(this)">🗄 Base Dati</a>
+    <a class="sb-item-solo" href="#metodologia" onclick="setActive(this)">📖 Metodologia & Normativa</a>
+    <a class="sb-item-solo" href="#alert-logica" onclick="setActive(this)">⚡ Logica degli Alert</a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-label">🛡️ Compliance &amp; AML · Mediobanca S.p.A.</div>
+      <h1>AML Reporting<br><span>Dashboard</span></h1>
+      <div class="hero-sub">Manuale operativo completo — v2.0</div>
+      <p>Guida all'utilizzo della piattaforma di monitoraggio Anti-Money Laundering e Counter-Terrorism Financing (AML/CFT) per l'area Compliance di Mediobanca.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val teal">520</div>
+          <div class="hero-stat-lbl">Clienti censiti</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val red">307</div>
+          <div class="hero-stat-lbl">ADV scadute</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val amber">772</div>
+          <div class="hero-stat-lbl">Op. inattese totali</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">110</div>
+          <div class="hero-stat-lbl">SOS archiviate</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val teal">14</div>
+          <div class="hero-stat-lbl">Sezioni analitiche</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- INTRO -->
+    <section class="doc-section" id="intro">
+      <div class="section-eyebrow"><span class="sec-tag teal">Introduzione</span></div>
+      <h2>Cos'è la AML Dashboard</h2>
+      <p class="lead">La <strong>AML Reporting Dashboard</strong> è la console centralizzata per il presidio AML/CFT di Mediobanca. Integra dati anagrafici, operativi e di rischio in un'unica interfaccia per supportare le attività quotidiane di compliance.</p>
+      <p>La piattaforma è un file HTML standalone che funziona interamente nel browser, senza dipendenze da server esterni. I dati sono incorporati nella pagina stessa e aggiornati ad ogni rilascio della nuova versione del file.</p>
+
+      <div class="callout danger">
+        <span class="callout-icon">🔴</span>
+        <div class="callout-body">
+          <strong>Dati riservati</strong>
+          Questo strumento contiene dati sensibili della clientela soggetti al segreto bancario e al GDPR. L'accesso è riservato al personale autorizzato dell'area Compliance e AML. Non distribuire il file al di fuori dei canali sicuri aziendali.
+        </div>
+      </div>
+
+      <h3>Cosa monitora la dashboard</h3>
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#0891b2">
+          <div class="kpi-card-label">Profilatura rischio</div>
+          <div class="kpi-card-value">520</div>
+          <div class="kpi-card-sub">Clienti classificati per profilo AML con trend storico</div>
+        </div>
+        <div class="kpi-card" style="--kc:#dc2626">
+          <div class="kpi-card-label">ADV scadute</div>
+          <div class="kpi-card-value">307</div>
+          <div class="kpi-card-sub">59,0% del portafoglio richiede aggiornamento</div>
+        </div>
+        <div class="kpi-card" style="--kc:#d97706">
+          <div class="kpi-card-label">Op. inattese</div>
+          <div class="kpi-card-value">772</div>
+          <div class="kpi-card-sub">Di cui 197 da valutare e 134 in lavorazione</div>
+        </div>
+        <div class="kpi-card" style="--kc:#7c3aed">
+          <div class="kpi-card-label">SOS archiviate</div>
+          <div class="kpi-card-value">110</div>
+          <div class="kpi-card-sub">83 inoltrate UIF · 25 con richiesta Autorità</div>
+        </div>
+        <div class="kpi-card" style="--kc:#16a34a">
+          <div class="kpi-card-label">PEP attivi</div>
+          <div class="kpi-card-value">42</div>
+          <div class="kpi-card-sub">8,1% del portafoglio · ADV rafforzata obbligatoria</div>
+        </div>
+        <div class="kpi-card" style="--kc:#dc2626">
+          <div class="kpi-card-label">In lista sanzioni</div>
+          <div class="kpi-card-value">2</div>
+          <div class="kpi-card-sub">Blocco operativo immediato richiesto</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRUTTURA -->
+    <section class="doc-section" id="struttura">
+      <div class="section-eyebrow"><span class="sec-tag blue">Interfaccia</span><span class="sec-num">§ 2</span></div>
+      <h2>Struttura e navigazione</h2>
+      <p class="lead">La dashboard è organizzata in una <strong>sidebar di navigazione</strong> a sinistra e un'<strong>area contenuto principale</strong> a destra. La sidebar rispecchia la struttura organizzativa delle attività AML.</p>
+
+      <h3>Mappa della navigazione</h3>
+      <div class="nav-map">
+        <div class="nm-title">Struttura sidebar</div>
+        <div class="nm-row">
+          <div class="nm-solo">🏠 Dashboard — Cruscotto di controllo AML/CFT</div>
+        </div>
+        <div class="nm-row">
+          <div class="nm-group">
+            <div class="nm-group-hdr">👥 Censimento clientela e profilatura rischio</div>
+            <div class="nm-children">
+              <div class="nm-child">📊 Anagrafiche &amp; Rischio — Panoramica</div>
+              <div class="nm-child">🌍 Residenza Internazionale</div>
+              <div class="nm-child">🔗 Titolarità effettiva e Assetti di controllo</div>
+              <div class="nm-child">📁 Rapporti continuativi e op. occasionali</div>
+            </div>
+          </div>
+        </div>
+        <div class="nm-row">
+          <div class="nm-group">
+            <div class="nm-group-hdr">📋 Adeguate Verifiche <span class="nm-badge amber">307 scadute</span></div>
+            <div class="nm-children">
+              <div class="nm-child">📊 Panoramica ADV</div>
+              <div class="nm-child">📅 Scadenzario ADV <span class="nm-badge red">prioritario</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="nm-row">
+          <div class="nm-group">
+            <div class="nm-group-hdr">🚨 Segnalazioni di Operazioni Sospette <span class="nm-badge red">110</span></div>
+            <div class="nm-children">
+              <div class="nm-child">📊 Panoramica SOS</div>
+              <div class="nm-child">👤 Dettaglio nominativi <span class="nm-badge teal">join anagrafe</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="nm-row">
+          <div class="nm-group">
+            <div class="nm-group-hdr">💸 Operatività clientela e controllo transazioni <span class="nm-badge amber">772</span></div>
+            <div class="nm-children">
+              <div class="nm-child">📊 Panoramica movimenti</div>
+              <div class="nm-child">⚠️ Operazioni inattese — Dettaglio</div>
+            </div>
+          </div>
+        </div>
+        <div class="nm-row"><div class="nm-solo">👁 PEP e liste sanzionatorie</div></div>
+        <div class="nm-row"><div class="nm-solo">🗄 Base Dati — Viewer interattivo</div></div>
+        <div class="nm-row"><div class="nm-solo">📖 Metodologia e Riferimenti normativi</div></div>
+      </div>
+
+      <h3>Elementi dell'interfaccia</h3>
+      <div class="accordion">
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🔴</span><div><div class="acc-title">Badge numerici nella sidebar</div><div class="acc-sub">Contatori di criticità in tempo reale</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            I badge colorati accanto alle voci di navigazione indicano il numero di elementi critici in quella sezione. <strong>Rosso</strong> = criticità immediate (SOS, sanzioni); <strong>Ambra</strong> = da pianificare (ADV scadute); <strong>Verde</strong> = informativo. Il contatore si aggiorna con i dati del dataset corrente.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🔍</span><div><div class="acc-title">Icona drill-down (🔍)</div><div class="acc-sub">Accesso alla lista nominativa da ogni KPI</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Molte card KPI hanno un'icona 🔍 nell'angolo. Cliccandola si apre un modale con la <strong>lista nominativa completa</strong> dei clienti che rientrano in quel KPI (es. "tutti i clienti ad alto rischio"). I modali sono filtrabili e permettono di accedere al dettaglio del singolo soggetto.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">📊</span><div><div class="acc-title">Tabelle ordinabili e filtrabili</div><div class="acc-sub">Presenti nelle sezioni di dettaglio</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Le tabelle nelle sezioni di dettaglio (Scadenzario, Rapporti, Inattese, ecc.) supportano:
+            <ul>
+              <li><strong>Ordinamento per colonna</strong>: clicca sull'intestazione (↕) per ordinare ascendente/discendente</li>
+              <li><strong>Filtri combinati</strong>: applica più filtri contemporaneamente (stato, tipo, rischio, regione)</li>
+              <li><strong>Ricerca testuale</strong>: cerca per nome o NDG nella barra di ricerca</li>
+              <li><strong>Paginazione</strong>: naviga tra le pagine con ◀ ▶</li>
+              <li><strong>Reset filtri</strong>: pulsante "Reset" per riportare la vista allo stato iniziale</li>
+            </ul>
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🗂️</span><div><div class="acc-title">Accordion nella sidebar</div><div class="acc-sub">Espandi/comprimi i gruppi di sezioni</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            I gruppi tematici nella sidebar (Censimento, ADV, SOS, Movimenti) possono essere espansi o compressi cliccando sul titolo del gruppo. Un triangolo ▶ indica lo stato chiuso, la rotazione indica lo stato aperto. La sezione attiva mantiene il suo gruppo sempre visibile.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section class="doc-section" id="dashboard">
+      <div class="section-eyebrow"><span class="sec-tag dark">Cruscotto</span><span class="sec-num">§ 3</span></div>
+      <h2>🏠 Dashboard — Cruscotto AML/CFT</h2>
+      <p class="lead">La sezione iniziale fornisce una <strong>vista critica immediata</strong> sullo stato AML del portafoglio. È la prima schermata che appare all'apertura e sintetizza le priorità operative del giorno.</p>
+
+      <div class="alert-strip">
+        <span class="alert-strip-icon">🔴</span>
+        <div class="alert-strip-body">
+          <strong>Esempio di alert automatico</strong>
+          "Attenzione critica: 307 ADV scadute (59,0%), 48 clienti alto rischio, 197 operazioni inattese da valutare, 2 soggetti in lista sanzioni. Verificare alert prioritari a sinistra."
+        </div>
+      </div>
+
+      <h3>Alert prioritari (pannello rosso)</h3>
+      <p>Il pannello di sinistra elenca gli <strong>alert AML più urgenti</strong>, ordinati per gravità crescente (0 = massima priorità). Ogni alert mostra NDG, nominativo e motivazione. Cliccando su un alert si naviga direttamente alla sezione di competenza (es. Scadenzario per ADV scadute).</p>
+
+      <h3>KPI principali del portafoglio</h3>
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#dc2626"><div class="kpi-card-label">ADV Scadute</div><div class="kpi-card-value">307</div><div class="kpi-card-sub">59,0% del portafoglio · drill-down disponibile</div></div>
+        <div class="kpi-card" style="--kc:#7c3aed"><div class="kpi-card-label">SOS Totali</div><div class="kpi-card-value">110</div><div class="kpi-card-sub">83 UIF · 25 Autorità</div></div>
+        <div class="kpi-card" style="--kc:#d97706"><div class="kpi-card-label">Inattese Da Valutare</div><div class="kpi-card-value">197</div><div class="kpi-card-sub">+ 134 in lavorazione</div></div>
+        <div class="kpi-card" style="--kc:#dc2626"><div class="kpi-card-label">Soggetti Critici</div><div class="kpi-card-value">7</div><div class="kpi-card-sub">2 liste sanzioni · 5 congelamento</div></div>
+        <div class="kpi-card" style="--kc:#0891b2"><div class="kpi-card-label">Alto Rischio</div><div class="kpi-card-value">48</div><div class="kpi-card-sub">9,2% del portafoglio</div></div>
+        <div class="kpi-card" style="--kc:#16a34a"><div class="kpi-card-label">PEP Attivi</div><div class="kpi-card-value">42</div><div class="kpi-card-sub">16 autodich. · 26 da lista esterna</div></div>
+        <div class="kpi-card" style="--kc:#2563eb"><div class="kpi-card-label">Volume Totale</div><div class="kpi-card-value">€ 405M</div><div class="kpi-card-sub">Cash ratio 11,2%</div></div>
+        <div class="kpi-card" style="--kc:#0891b2"><div class="kpi-card-label">Nuovi Clienti</div><div class="kpi-card-value">107</div><div class="kpi-card-sub">19 identificati a distanza</div></div>
+      </div>
+
+      <h3>Pipeline operazioni inattese</h3>
+      <p>Una barra visuale mostra la distribuzione delle 772 operazioni inattese per stato lavorazione:</p>
+      <div class="pipeline">
+        <div class="pipeline-seg" style="background:#dc2626; width:25.5%">197 Da Valutare</div>
+        <div class="pipeline-seg" style="background:#d97706; width:17.4%">134 Lav.</div>
+        <div class="pipeline-seg" style="background:#6b7280; width:42.9%">331 Arch. Resp.</div>
+        <div class="pipeline-seg" style="background:#7c3aed; width:14.2%">110→SOS</div>
+      </div>
+      <div class="callout teal">
+        <span class="callout-icon">📈</span>
+        <div class="callout-body">
+          <strong>Grafici storici</strong>
+          La dashboard include anche il <strong>Trend Storico Profili</strong> (11 trimestri) e il <strong>Trend SOS Mensile</strong>, utili per identificare tendenze e anomalie nel tempo.
+        </div>
+      </div>
+    </section>
+
+    <!-- ANAGRAFICHE -->
+    <section class="doc-section" id="anagrafiche">
+      <div class="section-eyebrow"><span class="sec-tag teal">Censimento</span><span class="sec-num">§ 4</span></div>
+      <h2>👥 Anagrafiche &amp; Rischio</h2>
+      <p class="lead">Censimento completo della clientela con classificazione per profilo di rischio AML, variazioni trimestrali e flag di attenzione specifici.</p>
+
+      <h3>Distribuzione per profilo rischio</h3>
+      <div class="risk-row">
+        <div class="risk-chip high"><div class="rc-dot"></div><div><div class="rc-lbl">Alto Rischio</div><div style="font-size:10px;color:inherit;opacity:.7">ADV rafforzata</div></div><div class="rc-val">48</div></div>
+        <div class="risk-chip med"><div class="rc-dot"></div><div><div class="rc-lbl">Medio Rischio</div><div style="font-size:10px;color:inherit;opacity:.7">ADV ordinaria</div></div><div class="rc-val">147</div></div>
+        <div class="risk-chip low"><div class="rc-dot"></div><div><div class="rc-lbl">Basso Rischio</div><div style="font-size:10px;color:inherit;opacity:.7">ADV semplificata</div></div><div class="rc-val">218</div></div>
+        <div class="risk-chip irr"><div class="rc-dot"></div><div><div class="rc-lbl">Irrilevante</div><div style="font-size:10px;color:inherit;opacity:.7">ADV semplificata</div></div><div class="rc-val">107</div></div>
+      </div>
+      <p>Ogni profilo ha un'icona 🔍 che apre il <strong>modale nominativi</strong> con la lista completa dei clienti in quella categoria, con dati anagrafici, stato ADV e regione.</p>
+
+      <h3>Indicatori di variazione</h3>
+      <table class="doc-table">
+        <thead><tr><th>Indicatore</th><th>Valore</th><th>Descrizione</th></tr></thead>
+        <tbody>
+          <tr><td>↑ Upgrade Rischio</td><td><span class="badge badge-warn">183</span></td><td>Clienti il cui profilo è peggiorato rispetto al trimestre precedente</td></tr>
+          <tr><td>↓ Downgrade Rischio</td><td><span class="badge badge-ok">179</span></td><td>Clienti il cui profilo è migliorato</td></tr>
+          <tr><td>★ Nuovi Clienti</td><td><span class="badge badge-teal">107</span></td><td>Clienti acquisiti nel periodo di riferimento</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Flag di attenzione (pill cliccabili)</h3>
+      <p>Sotto i KPI principali compaiono le <strong>pill informative cliccabili</strong> che filtrano i clienti per flag specifici:</p>
+      <div class="accordion">
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🏠</span><div><div class="acc-title">Identificati a Distanza (19)</div><div class="acc-sub">Clienti acquisiti senza contatto fisico</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Clienti per i quali l'identificazione è avvenuta a distanza (es. online, tramite intermediario). Richiedono misure di verifica rafforzata ai sensi dell'art. 19 D.Lgs. 231/2007. Cliccando la pill si apre la lista nominativa.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">⚑</span><div><div class="acc-title">Verifica Crime (17)</div><div class="acc-sub">Clienti con alert di criminalità</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Clienti con flag <code>VERIFICA_CRIME=TRUE</code> nel dataset. Indica la presenza di notizie pregiudizievoli o procedimenti penali. Richiedono valutazione specifica da parte dell'Ufficio AML.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">⚑</span><div><div class="acc-title">Verifica TER (18)</div><div class="acc-sub">Alert terrorismo</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Clienti con flag <code>VERIFICA_TER=TRUE</code>. Indica un potenziale collegamento con attività di finanziamento al terrorismo. 5 di questi sono ancora in attesa di valutazione. Richiedono azione immediata e comunicazione alle Autorità competenti.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🚫</span><div><div class="acc-title">Blacklist UE/ONU (26)</div><div class="acc-sub">Soggetti in lista sanzionatoria</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Clienti presenti nelle liste sanzionatorie dell'Unione Europea e/o dell'ONU (<code>IN_LISTA_SANZIONE=TRUE</code>). L'operatività con questi soggetti è bloccata per legge. Richiedono comunicazione immediata alle Autorità e segnalazione alla UIF.
+          </div>
+        </div>
+      </div>
+
+      <h3>Grafici disponibili</h3>
+      <ul style="margin:8px 0 0 18px;font-size:14px;color:var(--ink2);line-height:2">
+        <li><strong>Distribuzione per Tipo Soggetto × Rischio</strong> — heatmap o bar chart incrociato PF/PG per profilo</li>
+        <li><strong>Trend Storico Profili (11 trimestri)</strong> — evoluzione della distribuzione del rischio nel tempo</li>
+        <li><strong>Confronto Periodi</strong> — variazione trimestrale (Δ) per ogni categoria di rischio</li>
+        <li><strong>Clienti alto rischio per regione</strong> — distribuzione geografica delle criticità</li>
+        <li><strong>Clienti alto rischio per settore ATECO</strong> — concentrazione per settore economico</li>
+      </ul>
+    </section>
+
+    <!-- RESIDENZA -->
+    <section class="doc-section" id="residenza">
+      <div class="section-eyebrow"><span class="sec-tag teal">Censimento</span><span class="sec-num">§ 5</span></div>
+      <h2>🌍 Residenza Internazionale</h2>
+      <p class="lead">Distribuzione geografica dell'intera clientela con focus sui paesi a rischio elevato (Blacklist) che richiedono ADV rafforzata per legge.</p>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Obbligo normativo</strong>
+          38 clienti residenti in paesi classificati a rischio elevato (Blacklist) richiedono ADV rafforzata ex art. 24 D.Lgs. 231/2007 e verifica rafforzata dell'origine dei fondi.
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#0891b2"><div class="kpi-card-label">Residenti in Italia</div><div class="kpi-card-value">375</div><div class="kpi-card-sub">72,1% del portafoglio</div></div>
+        <div class="kpi-card" style="--kc:#2563eb"><div class="kpi-card-label">Residenti UE (no ITA)</div><div class="kpi-card-value">80</div><div class="kpi-card-sub">15,4% — DEU, FRA, CHE, LUX, GBR</div></div>
+        <div class="kpi-card" style="--kc:#d97706"><div class="kpi-card-label">Residenti Extra UE</div><div class="kpi-card-value">27</div><div class="kpi-card-sub">5,2% — USA, altri Paesi</div></div>
+        <div class="kpi-card" style="--kc:#dc2626"><div class="kpi-card-label">Paesi Blacklist</div><div class="kpi-card-value">38</div><div class="kpi-card-sub">7,3% — IRN, PRK, PAN, MYS, ARE, SAU</div></div>
+      </div>
+
+      <p>La tabella di dettaglio elenca i clienti per paese Blacklist con filtri per paese specifico, profilo rischio e tipo soggetto (PF/NPF). Ogni riga è ordinabile per NDG, nominativo, paese e profilo.</p>
+    </section>
+
+    <!-- TITOLARITÀ -->
+    <section class="doc-section" id="legami">
+      <div class="section-eyebrow"><span class="sec-tag teal">Censimento</span><span class="sec-num">§ 6</span></div>
+      <h2>🔗 Titolarità effettiva e Assetti di controllo</h2>
+      <p class="lead">Analisi dei legami societari e personali tra soggetti: titolari effettivi, delegati, procuratori e rappresentanti legali con relativi alert di rischio.</p>
+
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#0891b2"><div class="kpi-card-label">Legami totali</div><div class="kpi-card-value">30</div><div class="kpi-card-sub">7 TEF · 10 Delegati · 8 Procuratori · 5 Rapp.Leg.</div></div>
+        <div class="kpi-card" style="--kc:#dc2626"><div class="kpi-card-label">TEF con PEP collegato</div><div class="kpi-card-value">7</div><div class="kpi-card-sub">ADV rafforzata richiesta — art. 20 D.Lgs. 231/07</div></div>
+        <div class="kpi-card" style="--kc:#d97706"><div class="kpi-card-label">Rapp. Legali con PEP</div><div class="kpi-card-value">5</div><div class="kpi-card-sub">ADV rafforzata — verifica urgente</div></div>
+      </div>
+
+      <h3>Matrice legami</h3>
+      <p>La tabella principale mostra tutti i legami con i seguenti campi:</p>
+      <table class="doc-table">
+        <thead><tr><th>Campo</th><th>Descrizione</th></tr></thead>
+        <tbody>
+          <tr><td><code>Tipo Legame</code></td><td>TEF, Delegato, Procuratore, Rappresentante Legale</td></tr>
+          <tr><td><code>NDG Intestatario</code></td><td>Cliente principale</td></tr>
+          <tr><td><code>NDG Collegato</code></td><td>Soggetto legato</td></tr>
+          <tr><td><code>Rischio Collegato</code></td><td>Profilo AML del soggetto collegato</td></tr>
+          <tr><td><code>PEP Collegato</code></td><td>Sì/No — indica se il collegato è PEP</td></tr>
+        </tbody>
+      </table>
+      <p>I filtri disponibili permettono di isolare per tipo di legame, profilo rischio del collegato e flag PEP.</p>
+    </section>
+
+    <!-- RAPPORTI -->
+    <section class="doc-section" id="rapporti">
+      <div class="section-eyebrow"><span class="sec-tag teal">Censimento</span><span class="sec-num">§ 7</span></div>
+      <h2>📁 Rapporti continuativi e operazioni occasionali</h2>
+      <p class="lead">Stock e movimentazione dei rapporti bancari con analisi per profilo rischio e lista operativa prioritaria per i rapporti ad alto rischio.</p>
+
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#0891b2"><div class="kpi-card-label">Rapporti attivi totali</div><div class="kpi-card-value">803</div><div class="kpi-card-sub">Media 1,54 rapporti per cliente</div></div>
+        <div class="kpi-card" style="--kc:#16a34a"><div class="kpi-card-label">Aperti nell'anno</div><div class="kpi-card-value">50</div><div class="kpi-card-sub">16 su clienti alto/medio rischio</div></div>
+        <div class="kpi-card" style="--kc:#d97706"><div class="kpi-card-label">Chiusi nell'anno</div><div class="kpi-card-value">12</div><div class="kpi-card-sub">4 su iniziativa banca</div></div>
+        <div class="kpi-card" style="--kc:#7c3aed"><div class="kpi-card-label">Cointestati</div><div class="kpi-card-value">82</div><div class="kpi-card-sub">33 con cointestatario medio-alto rischio</div></div>
+      </div>
+
+      <h3>Segnali di attenzione aggiuntivi</h3>
+      <table class="doc-table">
+        <thead><tr><th>Flag</th><th>N.</th><th>Significato operativo</th></tr></thead>
+        <tbody>
+          <tr><td>Dormienti &gt;6 mesi (non irrilevanti)</td><td><span class="badge badge-warn">23</span></td><td>Rapporti senza movimentazione da oltre 6 mesi su clienti non irrilevanti — da monitorare</td></tr>
+          <tr><td>Operatività esclusivamente contante</td><td><span class="badge badge-danger">11</span></td><td>Alto rischio riciclaggio — richiede valutazione ADV rafforzata</td></tr>
+          <tr><td>Con &gt;2 cointestatari</td><td><span class="badge badge-warn">14</span></td><td>Complessità strutturale — verifica titolarità effettiva</td></tr>
+          <tr><td>NPF con TEF non identificato</td><td><span class="badge badge-danger">8</span></td><td>Obbligo normativo non soddisfatto — azione immediata</td></tr>
+          <tr><td>Chiusi su iniziativa banca</td><td><span class="badge badge-teal">4</span></td><td>Rapporti rescissi per motivi AML — da documentare</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout danger">
+        <span class="callout-icon">🚨</span>
+        <div class="callout-body">
+          <strong>Lista operativa prioritaria</strong>
+          In fondo alla sezione, una lista separata evidenzia i <strong>12 rapporti che richiedono azione immediata</strong>: intestatari con congelamento fondi, in lista sanzioni o con allarme terrorismo attivo. Questi sono filtrabili per priorità (Alta / Media / Monitoraggio) e tipo rapporto.
+        </div>
+      </div>
+    </section>
+
+    <!-- ADV -->
+    <section class="doc-section" id="adv">
+      <div class="section-eyebrow"><span class="sec-tag amber">ADV</span><span class="sec-num">§ 8</span></div>
+      <h2>📋 Adeguate Verifiche — Panoramica</h2>
+      <p class="lead">Stato aggregato delle Adeguate Verifiche della Clientela (AVC) con distribuzione per tipo di verifica, scadenze e anomalie.</p>
+
+      <div class="callout danger">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Criticità attuale</strong>
+          307 ADV scadute (59,0% del portafoglio). Usa il <em>Scadenzario ADV</em> per la lista nominativa prioritizzata con filtri avanzati.
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#dc2626"><div class="kpi-card-label">ADV Scadute</div><div class="kpi-card-value">307</div><div class="kpi-card-sub">59,0% — azione immediata richiesta</div></div>
+        <div class="kpi-card" style="--kc:#d97706"><div class="kpi-card-label">In Scadenza (90gg)</div><div class="kpi-card-value">37</div><div class="kpi-card-sub">7,1% — pianificare aggiornamento</div></div>
+        <div class="kpi-card" style="--kc:#16a34a"><div class="kpi-card-label">ADV Aggiornate</div><div class="kpi-card-value">176</div><div class="kpi-card-sub">33,8% — correnti e valide</div></div>
+        <div class="kpi-card" style="--kc:#dc2626"><div class="kpi-card-label">ADV Incomplete</div><div class="kpi-card-value">16</div><div class="kpi-card-sub">3,1% — dati mancanti nel fascicolo</div></div>
+        <div class="kpi-card" style="--kc:#0891b2"><div class="kpi-card-label">Demandate a Terzi</div><div class="kpi-card-value">5</div><div class="kpi-card-sub">1,0% — verifica delegata a soggetto esterno</div></div>
+        <div class="kpi-card" style="--kc:#7c3aed"><div class="kpi-card-label">Con Op. Occasionali</div><div class="kpi-card-value">79</div><div class="kpi-card-sub">15,2% — clienti senza rapporti continuativi</div></div>
+      </div>
+
+      <h3>Distribuzione per tipo di verifica</h3>
+      <table class="doc-table">
+        <thead><tr><th>Tipo ADV</th><th>N.</th><th>%</th><th>Quando applicata</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Ordinaria</strong></td><td>242</td><td>46,5%</td><td>Clienti a rischio standard — verifica completa base</td></tr>
+          <tr><td><strong>Rafforzata</strong></td><td>180</td><td>34,6%</td><td>PEP, alto rischio, paesi Blacklist — verifica approfondita obbligatoria</td></tr>
+          <tr><td><strong>Semplificata</strong></td><td>98</td><td>18,8%</td><td>Clienti a rischio irrilevante o basso — verifica ridotta ammessa</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Grafici disponibili</h3>
+      <ul style="margin:8px 0 0 18px;font-size:14px;color:var(--ink2);line-height:2">
+        <li><strong>Stato ADV per Tipo Verifica</strong> — matrice stato × tipo di ADV</li>
+        <li><strong>ADV Scadute per Regione (Top 10)</strong> — distribuzione geografica delle scadenze</li>
+      </ul>
+    </section>
+
+    <!-- SCADENZARIO -->
+    <section class="doc-section" id="scadenzario">
+      <div class="section-eyebrow"><span class="sec-tag red">Prioritario</span><span class="sec-num">§ 9</span></div>
+      <h2>📅 Scadenzario ADV</h2>
+      <p class="lead">Lista nominativa completa e filtrata di tutti i 520 clienti con il loro stato ADV. È lo strumento operativo principale per la gestione quotidiana delle scadenze.</p>
+
+      <h3>Come usare lo Scadenzario</h3>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><div class="step-content"><strong>Ordinamento di default</strong>: la tabella parte ordinata per criticità massima — Scadute + Alto Rischio in cima. Non è necessario riordinare per trovare le priorità.</div></li>
+        <li><span class="step-num">2</span><div class="step-content"><strong>Applica i filtri</strong>: usa i selettori per stato ADV, tipo ADV, profilo rischio e tipo soggetto. I filtri sono combinabili tra loro.</div></li>
+        <li><span class="step-num">3</span><div class="step-content"><strong>Riordina per colonna</strong>: clicca sull'intestazione con ↕ per ordinare per data ADV, data scadenza, nominativo o NDG.</div></li>
+        <li><span class="step-num">4</span><div class="step-content"><strong>Usa il pulsante Reset</strong> per tornare alla vista di default dopo aver applicato filtri.</div></li>
+      </ol>
+
+      <h3>Filtri disponibili</h3>
+      <div class="filter-bar">
+        <span class="filter-lbl">Stato ADV:</span>
+        <span class="filter-chip sel">Tutti</span>
+        <span class="filter-chip">Scaduta</span>
+        <span class="filter-chip">In Scadenza</span>
+        <span class="filter-chip">Aggiornata</span>
+        <span class="filter-sep"></span>
+        <span class="filter-lbl">Tipo ADV:</span>
+        <span class="filter-chip sel">Tutti</span>
+        <span class="filter-chip">Rafforzata</span>
+        <span class="filter-chip">Ordinaria</span>
+        <span class="filter-chip">Semplificata</span>
+      </div>
+      <div class="filter-bar">
+        <span class="filter-lbl">Rischio:</span>
+        <span class="filter-chip sel">Tutti</span>
+        <span class="filter-chip" style="color:#991b1b;border-color:#fca5a5">Alto</span>
+        <span class="filter-chip" style="color:#92400e;border-color:#fcd34d">Medio</span>
+        <span class="filter-chip" style="color:#14532d;border-color:#86efac">Basso</span>
+        <span class="filter-chip" style="color:var(--teal-dk);border-color:#a5f3fc">Irrilevante</span>
+        <span class="filter-sep"></span>
+        <span class="filter-lbl">Tipo Sogg.:</span>
+        <span class="filter-chip sel">Tutti</span>
+        <span class="filter-chip">PF</span>
+        <span class="filter-chip">NPF (PG)</span>
+      </div>
+
+      <h3>Colonne della tabella</h3>
+      <table class="doc-table">
+        <thead><tr><th>Colonna</th><th>Contenuto</th></tr></thead>
+        <tbody>
+          <tr><td><code>NDG</code></td><td>Numero del cliente — ordinabile</td></tr>
+          <tr><td><code>Nominativo</code></td><td>Nome/Cognome (PF) o Denominazione (PG) — ordinabile</td></tr>
+          <tr><td><code>Tipo</code></td><td>PF / NPF</td></tr>
+          <tr><td><code>Tipo ADV</code></td><td>Rafforzata / Ordinaria / Semplificata</td></tr>
+          <tr><td><code>Data ADV</code></td><td>Data dell'ultima verifica effettuata</td></tr>
+          <tr><td><code>Scadenza</code></td><td>Data di scadenza della verifica — ordinabile</td></tr>
+          <tr><td><code>Stato</code></td><td>Scaduta / In Scadenza / Aggiornata — con badge colorato</td></tr>
+          <tr><td><code>Rischio</code></td><td>Profilo AML del cliente</td></tr>
+          <tr><td><code>Incompleta</code></td><td>Flag dati mancanti nel fascicolo</td></tr>
+          <tr><td><code>Regione</code></td><td>Regione di residenza</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SOS -->
+    <section class="doc-section" id="sos">
+      <div class="section-eyebrow"><span class="sec-tag red">SOS</span><span class="sec-num">§ 10</span></div>
+      <h2>🚨 Segnalazioni Sospette — Panoramica</h2>
+      <p class="lead">Quadro aggregato delle Segnalazioni di Operazioni Sospette (SOS) con distribuzione geografica, iter di lavorazione e trend mensile.</p>
+
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#dc2626"><div class="kpi-card-label">SOS Totali</div><div class="kpi-card-value">110</div><div class="kpi-card-sub">ott-2024 → apr-2026</div></div>
+        <div class="kpi-card" style="--kc:#7c3aed"><div class="kpi-card-label">Inoltrate a UIF</div><div class="kpi-card-value">83</div><div class="kpi-card-sub">75,5% delle SOS</div></div>
+        <div class="kpi-card" style="--kc:#d97706"><div class="kpi-card-label">Con Richiesta Autorità</div><div class="kpi-card-value">25</div><div class="kpi-card-sub">22,7% delle SOS</div></div>
+        <div class="kpi-card" style="--kc:#6b7280"><div class="kpi-card-label">Solo Archiviate</div><div class="kpi-card-value">27</div><div class="kpi-card-sub">24,5% — non inoltrate a UIF</div></div>
+      </div>
+
+      <h3>Grafici</h3>
+      <ul style="margin:8px 0 0 18px;font-size:14px;color:var(--ink2);line-height:2">
+        <li><strong>Trend SOS Mensile</strong> — andamento delle segnalazioni nel periodo di riferimento</li>
+        <li><strong>SOS per Regione (Top 10)</strong> — concentrazione geografica delle segnalazioni</li>
+        <li><strong>Esito SOS</strong> — distribuzione per esito (UIF, Autorità, Archiviate)</li>
+        <li><strong>Iter SOS</strong> — stato lavorazione delle operazioni che hanno generato segnalazione</li>
+      </ul>
+    </section>
+
+    <!-- SOS NOMINATIVI -->
+    <section class="doc-section" id="sos-nominativi">
+      <div class="section-eyebrow"><span class="sec-tag red">SOS</span><span class="sec-num">§ 11</span></div>
+      <h2>👤 SOS — Dettaglio Nominativi</h2>
+      <p class="lead">Lista nominativa arricchita di tutti i soggetti coinvolti in segnalazioni, con join tra la tabella SOS e l'anagrafe clienti.</p>
+
+      <div class="callout teal">
+        <span class="callout-icon">🔗</span>
+        <div class="callout-body">
+          <strong>Dati arricchiti</strong>
+          Questa vista unisce automaticamente i dati delle segnalazioni (SEGNALAZIONI_SOS) con i dati anagrafici (ANAGRAFE_CLIENTI) tramite NDG, offrendo un quadro completo senza dover cercare separatamente nei due archivi.
+        </div>
+      </div>
+
+      <h3>Filtri disponibili</h3>
+      <div class="filter-bar">
+        <span class="filter-lbl">Esito UIF:</span>
+        <span class="filter-chip sel">Tutti</span>
+        <span class="filter-chip">Inoltrate UIF</span>
+        <span class="filter-chip">Non inoltrate</span>
+        <span class="filter-sep"></span>
+        <span class="filter-lbl">Autorità:</span>
+        <span class="filter-chip sel">Tutti</span>
+        <span class="filter-chip">Con richiesta</span>
+        <span class="filter-chip">Senza richiesta</span>
+        <span class="filter-sep"></span>
+        <span class="filter-lbl">Regione:</span>
+        <span class="filter-chip sel">Tutte</span>
+      </div>
+
+      <table class="doc-table">
+        <thead><tr><th>Colonna</th><th>Contenuto</th></tr></thead>
+        <tbody>
+          <tr><td><code>ID SOS</code></td><td>Identificativo della segnalazione — ordinabile</td></tr>
+          <tr><td><code>NDG</code></td><td>Numero cliente</td></tr>
+          <tr><td><code>Nominativo</code></td><td>Da anagrafe clienti (join automatico)</td></tr>
+          <tr><td><code>Tipo</code></td><td>PF / NPF</td></tr>
+          <tr><td><code>Rischio</code></td><td>Profilo AML del soggetto</td></tr>
+          <tr><td><code>Data Segnalazione</code></td><td>Data della SOS — ordinabile</td></tr>
+          <tr><td><code>Inoltrata UIF</code></td><td>Sì/No con badge colorato</td></tr>
+          <tr><td><code>Rich. Autorità</code></td><td>Presenza di richiesta da parte dell'Autorità</td></tr>
+          <tr><td><code>ID Operazione</code></td><td>Riferimento all'operazione inattesa che ha generato la SOS</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- MOVIMENTI -->
+    <section class="doc-section" id="movimenti">
+      <div class="section-eyebrow"><span class="sec-tag purple">Operatività</span><span class="sec-num">§ 12</span></div>
+      <h2>💸 Operatività &amp; Movimenti</h2>
+      <p class="lead">Analisi volumetrica dei movimenti transazionali con identificazione delle operazioni inattese per filiale e causale.</p>
+
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#2563eb"><div class="kpi-card-label">Volume totale</div><div class="kpi-card-value">€ 405M</div><div class="kpi-card-sub">2.024 operazioni totali</div></div>
+        <div class="kpi-card" style="--kc:#dc2626"><div class="kpi-card-label">Volume contante</div><div class="kpi-card-value">€ 45M</div><div class="kpi-card-sub">11,2% del totale — soglia superata ⚠</div></div>
+        <div class="kpi-card" style="--kc:#d97706"><div class="kpi-card-label">% Op. Inattese</div><div class="kpi-card-value">38,1%</div><div class="kpi-card-sub">772 su 2.024 operazioni totali</div></div>
+        <div class="kpi-card" style="--kc:#dc2626"><div class="kpi-card-label">Da Valutare</div><div class="kpi-card-value">197</div><div class="kpi-card-sub">+ 134 in lavorazione</div></div>
+      </div>
+
+      <div class="callout danger">
+        <span class="callout-icon">💵</span>
+        <div class="callout-body">
+          <strong>Alert contante</strong>
+          Il volume contante (€ 45M, 11,2% del totale) supera la soglia di allerta impostata. Le operazioni in contante richiedono verifica rafforzata e, se sospette, segnalazione alla UIF.
+        </div>
+      </div>
+
+      <h3>Distribuzione per filiale</h3>
+      <p>La sezione include una tabella espandibile con le operazioni inattese suddivise per filiale (15 filiali). Per ogni filiale si vedono: totale inattese, da valutare, in lavorazione, archiviate responsabile, sfociate in SOS. Cliccando sul nome della filiale si espande/comprime il dettaglio.</p>
+
+      <h3>Grafici disponibili</h3>
+      <ul style="margin:8px 0 0 18px;font-size:14px;color:var(--ink2);line-height:2">
+        <li><strong>Trend Volume Mensile (EUR)</strong> — andamento del volume totale nel periodo</li>
+        <li><strong>Trend Contante Mensile (EUR)</strong> — evoluzione delle operazioni cash</li>
+        <li><strong>Operazioni Inattese per Filiale</strong> — distribuzione geografica interna</li>
+        <li><strong>Top Causali Operativi</strong> — causali più frequenti nelle operazioni inattese</li>
+      </ul>
+    </section>
+
+    <!-- INATTESE -->
+    <section class="doc-section" id="inattese">
+      <div class="section-eyebrow"><span class="sec-tag purple">Operatività</span><span class="sec-num">§ 13</span></div>
+      <h2>⚠️ Operazioni Inattese — Dettaglio</h2>
+      <p class="lead">Lista completa e filtrata delle 772 operazioni inattese con stato di lavorazione, importi e causale. È lo strumento operativo per gestire il workflow di valutazione.</p>
+
+      <h3>Pipeline di lavorazione</h3>
+      <div class="status-flow">
+        <div class="sf-step"><div style="color:#dc2626;font-size:20px;font-family:var(--mono);font-weight:500">197</div><div><div style="font-weight:600;font-size:12px">Da Valutare</div><div class="sf-step-lbl">Nuove — da esaminare</div></div></div>
+        <div class="sf-arrow">→</div>
+        <div class="sf-step"><div style="color:#d97706;font-size:20px;font-family:var(--mono);font-weight:500">134</div><div><div style="font-weight:600;font-size:12px">In Lavorazione</div><div class="sf-step-lbl">Presa in carico</div></div></div>
+        <div class="sf-arrow">→</div>
+        <div class="sf-step"><div style="color:#6b7280;font-size:20px;font-family:var(--mono);font-weight:500">331</div><div><div style="font-weight:600;font-size:12px">Arch. Resp.</div><div class="sf-step-lbl">Archiviate dal responsabile</div></div></div>
+        <div class="sf-arrow">→</div>
+        <div class="sf-step"><div style="color:#7c3aed;font-size:20px;font-family:var(--mono);font-weight:500">110</div><div><div style="font-weight:600;font-size:12px">→ SOS</div><div class="sf-step-lbl">Sfociate in segnalazione</div></div></div>
+      </div>
+
+      <h3>Filtri disponibili</h3>
+      <div class="filter-bar">
+        <span class="filter-lbl">Stato:</span>
+        <span class="filter-chip sel">Tutti</span>
+        <span class="filter-chip" style="color:#991b1b">Da Valutare</span>
+        <span class="filter-chip" style="color:#92400e">In Lavorazione</span>
+        <span class="filter-chip">Archiviato Resp.</span>
+        <span class="filter-chip" style="color:#4c1d95">→ SOS</span>
+        <span class="filter-sep"></span>
+        <span class="filter-lbl">Filiale:</span>
+        <span class="filter-chip sel">Tutte</span>
+        <span class="filter-sep"></span>
+        <span class="filter-lbl">Causale:</span>
+        <span class="filter-chip sel">Tutte</span>
+      </div>
+
+      <table class="doc-table">
+        <thead><tr><th>Colonna</th><th>Contenuto</th></tr></thead>
+        <tbody>
+          <tr><td><code>ID Operazione</code></td><td>Identificativo univoco — ordinabile</td></tr>
+          <tr><td><code>NDG</code></td><td>Cliente di riferimento</td></tr>
+          <tr><td><code>Data</code> / <code>Mese</code></td><td>Data e mese dell'operazione</td></tr>
+          <tr><td><code>Causale</code></td><td>Motivazione dell'operazione</td></tr>
+          <tr><td><code>Importo €</code></td><td>Valore dell'operazione — ordinabile</td></tr>
+          <tr><td><code>Contante €</code></td><td>Componente cash (se presente)</td></tr>
+          <tr><td><code>Stato</code></td><td>Da Valutare / In Lavorazione / Arch. Resp. / →SOS</td></tr>
+          <tr><td><code>Regione</code> / <code>Filiale</code></td><td>Localizzazione dell'operazione</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- PEP -->
+    <section class="doc-section" id="pep">
+      <div class="section-eyebrow"><span class="sec-tag red">Sanzioni</span><span class="sec-num">§ 14</span></div>
+      <h2>👁 PEP e Liste sanzionatorie</h2>
+      <p class="lead">Gestione completa delle Persone Esposte Politicamente (PEP) e dei soggetti presenti in liste sanzionatorie, con alert immediati per le situazioni critiche.</p>
+
+      <div class="alert-strip">
+        <span class="alert-strip-icon">🔴</span>
+        <div class="alert-strip-body">
+          <strong>Alert attivi in questa sezione</strong>
+          1 soggetto in lista sanzioni con rapporti attivi privi di SOS inoltrata · 5 soggetti con alert terrorismo in attesa di valutazione · 8 PEP con ADV rafforzata scaduta · 5 soggetti con congelamento fondi attivo
+        </div>
+      </div>
+
+      <h3>PEP — Persone Esposte Politicamente</h3>
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kc:#0891b2"><div class="kpi-card-label">PEP Attivi Totali</div><div class="kpi-card-value">42</div><div class="kpi-card-sub">8,1% del portafoglio</div></div>
+        <div class="kpi-card" style="--kc:#dc2626"><div class="kpi-card-label">ADV Rafforzata Scaduta</div><div class="kpi-card-value">8</div><div class="kpi-card-sub">Aggiornamento urgente richiesto</div></div>
+        <div class="kpi-card" style="--kc:#16a34a"><div class="kpi-card-label">ADV Rafforzata OK</div><div class="kpi-card-value">4</div><div class="kpi-card-sub">9,5% dei PEP in regola</div></div>
+        <div class="kpi-card" style="--kc:#d97706"><div class="kpi-card-label">PEP con almeno 1 SOS</div><div class="kpi-card-value">9</div><div class="kpi-card-sub">Monitoraggio rafforzato attivo</div></div>
+        <div class="kpi-card" style="--kc:#7c3aed"><div class="kpi-card-label">Primo Livello (carica diretta)</div><div class="kpi-card-value">18</div><div class="kpi-card-sub">Carica politica diretta</div></div>
+        <div class="kpi-card" style="--kc:#0891b2"><div class="kpi-card-label">Familiari / Associati PEP</div><div class="kpi-card-value">24</div><div class="kpi-card-sub">Soggetti collegati a PEP</div></div>
+      </div>
+
+      <h3>Indicatori di copertura PEP</h3>
+      <table class="doc-table">
+        <thead><tr><th>Indicatore</th><th>Valore</th></tr></thead>
+        <tbody>
+          <tr><td>% PEP con SOS inoltrata nell'anno</td><td><span class="badge badge-warn">19,0%</span></td></tr>
+          <tr><td>% PEP con operazioni inattese</td><td><span class="badge badge-danger">35,7%</span></td></tr>
+          <tr><td>% PEP con ADV aggiornata</td><td><span class="badge badge-danger">9,5%</span></td></tr>
+          <tr><td>% PEP esteri sul totale PEP</td><td><span class="badge badge-teal">28,6%</span></td></tr>
+          <tr><td>% PEP con contante sopra soglia</td><td><span class="badge badge-danger">57,1%</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Liste sanzionatorie &amp; Alert elevato rischio</h3>
+      <div class="accordion">
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">⛔</span><div><div class="acc-title">In Lista Sanzioni UE/ONU (2)</div><div class="acc-sub">BLOCCO IMMEDIATO — comunicazione Autorità richiesta</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Clienti con <code>IN_LISTA_SANZIONE=TRUE</code>. Il blocco operativo è obbligatorio per legge. Richiedono comunicazione immediata alle Autorità competenti e segnalazione alla UIF. Il flag è visualizzato con sfondo rosso nella lista operativa dei Rapporti.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🔒</span><div><div class="acc-title">Congelamento Fondi Attivo (5)</div><div class="acc-sub">Reg. UE 2580/2001 — operatività sospesa</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Soggetti con misura cautelare di congelamento fondi attiva ai sensi del Reg. UE 2580/2001. L'operatività è completamente sospesa. Qualsiasi operazione su questi soggetti deve essere bloccata e segnalata.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">⚑</span><div><div class="acc-title">VERIFICA_TER — Terrorismo (18)</div><div class="acc-sub">13 già valutati · 5 in attesa</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Soggetti con potenziale collegamento ad attività di finanziamento al terrorismo. 13 sono già stati valutati, 5 sono ancora in attesa. I soggetti in attesa richiedono valutazione urgente da parte del team AML e, se confermata la correlazione, comunicazione alle Autorità.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">⚑</span><div><div class="acc-title">VERIFICA_CRIME — Criminalità</div><div class="acc-sub">Notizie pregiudizievoli</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Soggetti per i quali risultano notizie pregiudizievoli o procedimenti penali in corso. Richiedono un'analisi approfondita del profilo e la valutazione di eventuali operazioni anomale.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BASE DATI -->
+    <section class="doc-section" id="base-dati">
+      <div class="section-eyebrow"><span class="sec-tag blue">Strumento</span><span class="sec-num">§ 15</span></div>
+      <h2>🗄 Base Dati</h2>
+      <p class="lead">Viewer interattivo che permette di navigare, filtrare e cercare direttamente su tutte le tabelle del dataset incorporato nella dashboard.</p>
+      <p>Le tabelle accessibili sono:</p>
+      <table class="doc-table">
+        <thead><tr><th>Tabella</th><th>Record</th><th>Contenuto</th></tr></thead>
+        <tbody>
+          <tr><td><code>ANAGRAFE_CLIENTI</code></td><td>520</td><td>Dati anagrafici e profili AML di tutti i clienti</td></tr>
+          <tr><td><code>RAPPORTI</code></td><td>803</td><td>Rapporti bancari attivi e storici</td></tr>
+          <tr><td><code>MOVIMENTI</code></td><td>2.024</td><td>Operazioni transazionali con causale e importo</td></tr>
+          <tr><td><code>SOS</code></td><td>110</td><td>Segnalazioni di operazioni sospette</td></tr>
+          <tr><td><code>LEGAMI</code></td><td>30</td><td>Legami tra soggetti (TEF, delegati, procuratori)</td></tr>
+          <tr><td><code>PROFILI STORICI</code></td><td>12</td><td>Snapshot trimestrali della distribuzione del rischio</td></tr>
+        </tbody>
+      </table>
+      <div class="callout info">
+        <span class="callout-icon">🔍</span>
+        <div class="callout-body">
+          <strong>Utilizzo</strong>
+          Per ogni tabella sono disponibili ricerca testuale, paginazione (◀ ▶) e ordinamento per colonna. Utile per verifiche puntuali o per trovare un cliente specifico tramite NDG o nominativo.
+        </div>
+      </div>
+    </section>
+
+    <!-- METODOLOGIA -->
+    <section class="doc-section" id="metodologia">
+      <div class="section-eyebrow"><span class="sec-tag green">Normativa</span><span class="sec-num">§ 16</span></div>
+      <h2>📖 Metodologia e Riferimenti normativi</h2>
+      <p class="lead">Documentazione interna completa che spiega fonti dei dati, formule di calcolo, soglie e basi normative per ogni KPI e sezione della dashboard.</p>
+      <p>Questa sezione è di fondamentale importanza per il personale che deve rispondere a ispezioni o audit: ogni dato esposto nella dashboard ha qui la propria tracciabilità metodologica.</p>
+
+      <h3>Contenuto della documentazione</h3>
+      <div class="accordion">
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🏠</span><div><div class="acc-title">Logica Alert Dashboard</div><div class="acc-sub">Regole di priorità e criteri di gravità</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Documenta le 5 regole di generazione degli alert con le relative query SQL di origine:
+            <ul>
+              <li><strong>Regola 0</strong> — ADV Scaduta + Alto Rischio (gravità 0, massima)</li>
+              <li><strong>Regola 0</strong> — In Lista Sanzione (gravità 0, azione immediata)</li>
+              <li><strong>Regola 0</strong> — Congelamento Fondi (gravità 0)</li>
+              <li><strong>Regola 1</strong> — ADV Scaduta + Medio Rischio (gravità 1, top 5)</li>
+              <li><strong>Regola 0</strong> — Op. Inattese + SOS (gravità 0, monitoraggio)</li>
+            </ul>
+            Gli alert sono ordinati per gravità crescente (0=massima). Massimo 20 alert visualizzati.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">📅</span><div><div class="acc-title">Logica Scadenzario ADV</div><div class="acc-sub">Ordinamento di default e criteri di scadenza</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Documenta l'ordinamento di default: <code>ORDER BY stato_order ASC, risk_order ASC</code> dove stato_order: SCADUTA=0, IN SCADENZA=1, AGGIORNATA=2 e risk_order: ALTO=0, MEDIO=1, BASSO=2, IRRILEVANTE=3. Spiega i campi sorgente e le logiche di calcolo della data di scadenza.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">🚨</span><div><div class="acc-title">Metodologia SOS e Operazioni Inattese</div><div class="acc-sub">Criteri di classificazione e iter</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Descrive i criteri che classificano un'operazione come "inattesa" rispetto al profilo di rischio del cliente, le soglie di importo e causale, e il flusso di lavorazione che può sfociare in una SOS.
+          </div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div class="acc-header-l"><span class="acc-icon">⚖️</span><div><div class="acc-title">Riferimenti normativi</div><div class="acc-sub">D.Lgs. 231/2007, Reg. UE, disposizioni UIF</div></div></div>
+            <span class="acc-chevron">▼</span>
+          </div>
+          <div class="acc-body">
+            Per ogni sezione vengono citati i riferimenti normativi applicabili: D.Lgs. 231/2007 (art. 19, 20, 24), Reg. UE 2580/2001 (congelamento fondi), disposizioni UIF per le segnalazioni, EBA Guidelines per la profilazione del rischio AML.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGICA ALERT -->
+    <section class="doc-section" id="alert-logica">
+      <div class="section-eyebrow"><span class="sec-tag red">Riferimento rapido</span><span class="sec-num">§ 17</span></div>
+      <h2>⚡ Logica degli Alert — Riferimento rapido</h2>
+      <p class="lead">Guida sintetica alla priorità degli alert per il personale operativo. Utile come riferimento quotidiano per la gestione delle attività AML.</p>
+
+      <table class="doc-table">
+        <thead><tr><th>Priorità</th><th>Trigger</th><th>Azione richiesta</th><th>Base normativa</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-danger">🔴 IMMEDIATA</span></td>
+            <td>Soggetto in lista sanzioni UE/ONU con rapporti attivi</td>
+            <td>Blocco operativo + comunicazione Autorità + SOS a UIF</td>
+            <td>Reg. UE sanzioni</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-danger">🔴 IMMEDIATA</span></td>
+            <td>Congelamento fondi attivo</td>
+            <td>Sospensione operatività + comunicazione</td>
+            <td>Reg. UE 2580/2001</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-danger">🔴 IMMEDIATA</span></td>
+            <td>ADV Scaduta + Profilo Alto Rischio</td>
+            <td>Aggiornamento ADV rafforzata urgente</td>
+            <td>D.Lgs. 231/07 art. 19</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-warn">🟡 URGENTE</span></td>
+            <td>ADV Scaduta + Profilo Medio Rischio</td>
+            <td>Pianificare aggiornamento ADV entro 30gg</td>
+            <td>D.Lgs. 231/07 art. 19</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-warn">🟡 URGENTE</span></td>
+            <td>PEP con ADV rafforzata scaduta</td>
+            <td>Aggiornamento ADV rafforzata urgente</td>
+            <td>D.Lgs. 231/07 art. 24-bis</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-warn">🟡 URGENTE</span></td>
+            <td>VERIFICA_TER in attesa di valutazione</td>
+            <td>Valutazione AML team entro 48h</td>
+            <td>D.Lgs. 109/2007</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-teal">🔵 MONITORAGGIO</span></td>
+            <td>Operazioni inattese "Da Valutare"</td>
+            <td>Valutazione nel workflow operativo</td>
+            <td>D.Lgs. 231/07 art. 35</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-teal">🔵 MONITORAGGIO</span></td>
+            <td>NPF con TEF non identificato</td>
+            <td>Identificazione titolare effettivo</td>
+            <td>D.Lgs. 231/07 art. 20</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip">
+        <span class="callout-icon">📌</span>
+        <div class="callout-body">
+          <strong>Consiglio operativo</strong>
+          Inizia sempre dalla sezione <strong>Dashboard</strong> per vedere gli alert prioritari del giorno, poi naviga al <strong>Scadenzario ADV</strong> per gestire le scadenze. Consulta <strong>PEP e liste</strong> dopo ogni aggiornamento delle liste sanzionatorie europee.
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+
+  <footer class="doc-footer">
+    <span>AML Reporting Dashboard · Mediobanca S.p.A. · Manuale Utente v2.0</span>
+    <span>Riservato — Uso interno · Aprile 2026</span>
+  </footer>
+</main>
+
+<button class="back-top" id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Torna in cima">↑</button>
+
+<script>
+// ── ACCORDION ──
+function toggleAcc(header) {
+  const item = header.parentElement;
+  const body = item.querySelector('.acc-body');
+  item.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// ── SIDEBAR GROUP TOGGLE ──
+function toggleGroup(header) {
+  const group = header.parentElement;
+  const children = group.querySelector('.sb-group-children');
+  header.classList.toggle('open');
+  children.classList.toggle('open');
+}
+
+// ── SIDEBAR ACTIVE ──
+function setActive(el) {
+  document.querySelectorAll('.sb-item, .sb-item-solo').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── SCROLL SPY ──
+const sections = document.querySelectorAll('.doc-section');
+const navLinks = document.querySelectorAll('.sb-item, .sb-item-solo');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      const id = entry.target.id;
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + id) link.classList.add('active');
+      });
+    }
+  });
+}, { threshold: 0.08, rootMargin: '-60px 0px -55% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// ── BACK TO TOP ──
+window.addEventListener('scroll', () => {
+  document.getElementById('back-top').classList.toggle('visible', window.scrollY > 400);
+});
+
+// ── SEARCH ──
+function searchDocs(query) {
+  document.querySelectorAll('mark.hl').forEach(el => {
+    el.replaceWith(document.createTextNode(el.textContent));
+  });
+  if (!query || query.length < 2) return;
+  const content = document.querySelector('.content');
+  const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  let node;
+  while (node = walker.nextNode()) {
+    if (node.nodeValue.trim() && !['SCRIPT','STYLE','INPUT'].includes(node.parentElement.tagName)) {
+      textNodes.push(node);
+    }
+  }
+  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  let first = null;
+  textNodes.forEach(tn => {
+    if (re.test(tn.nodeValue)) {
+      const span = document.createElement('span');
+      span.innerHTML = tn.nodeValue.replace(re, '<mark class="hl">$1</mark>');
+      tn.parentNode.replaceChild(span, tn);
+      if (!first) first = span;
+    }
+  });
+  if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ── INITIAL VISIBILITY ──
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    sections.forEach(s => {
+      if (s.getBoundingClientRect().top < window.innerHeight) s.classList.add('visible');
+    });
+  }, 150);
+});
+</script>
+</body>
+</html>
